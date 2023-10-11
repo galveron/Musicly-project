@@ -30,17 +30,17 @@ export default function Navbar() {
             </div>
             <div className='row' id='main'>
                 <nav id='sidebar' className='col-2' >
-                    <lu className='nav nav-tabs' id='nav-item'>
+                    <ul className='nav nav-tabs' id='nav-item'>
                         <li className='nav-item'>
-                            <NavLink className='nav-link' to='/'><i class="fa-solid fa-house"></i></NavLink>
+                            <NavLink className='nav-link' to='/'><i className="fa-solid fa-house"></i></NavLink>
                         </li>
                         <li className='nav-item'>
-                            <NavLink className='nav-link' to='/search'><i class="fa-solid fa-magnifying-glass"></i></NavLink>
+                            <NavLink className='nav-link' to='/search'><i className="fa-solid fa-magnifying-glass"></i></NavLink>
                         </li>
                         <li className='nav-item'>
-                            <NavLink className='nav-link' to='/favorites'><i class="fa-solid fa-heart"></i></NavLink>
+                            <NavLink className='nav-link' to='/favorites'><i className="fa-solid fa-heart"></i></NavLink>
                         </li>
-                    </lu>
+                    </ul>
                 </nav>
                 <Outlet />
             </div>

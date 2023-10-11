@@ -64,16 +64,16 @@ app.post('/login', async (req, res) => {
 // HISTORY
 app.get('/history/:username', async (req, res) => {
     try {
-        const user = await User.findOne({username: req.params.username})
-        res.send({user: user, history: user.history})
+        const user = await User.findOne({ username: req.params.username })
+        res.send({ user: user, history: user.history })
     } catch (error) {
         res.status(500).send({ msg: "Something went wrong" })
     }
 })
 
-app.post('/history/:username', async (req, res, next) => {
+app.post('/history/:username', async (req, res, next) => {
     try {
-        const user = await User.findOne({username: req.params.username});
+        const user = await User.findOne({ username: req.params.username });
         const { artists, albums, songs } = user.history;
         const { songArtist, songAlbum, songTitle } = req.body;
         songArtist ? artists.push(songArtist) : null;
@@ -81,7 +81,7 @@ app.post('/history/:username', async (req, res, next) => {
         songTitle ? songs.push(`${songTitle} by ${songArtist}`) : null;
 
         user.save();
-        res.status(200).send({msg: "updated"})
+        res.status(200).send({ msg: "updated" })
     } catch (err) {
         console.log(err);
     }
@@ -89,13 +89,13 @@ app.post('/history/:username', async (req, res, next) => {
 
 app.delete('/history/:username', async (req, res) => {
     try {
-        let user = await User.findOneAndUpdate({username: req.params.username}, {
+        let user = await User.findOneAndUpdate({ username: req.params.username }, {
             history: {
                 songs: [],
                 artists: []
             }
         });
-        res.send({user: user, msg: "history deleted"})
+        res.send({ user: user, msg: "history deleted" })
     } catch (error) {
         res.status(500).send({ msg: "Something went wrong" });
     }
@@ -241,7 +241,7 @@ app.patch('/profile/edit/:username', async (req, res) => {
             password: req.body.password,
             email: req.body.email
         })
-        res.send({user:user, msg: "DONE"})
+        res.send({ user: user, msg: "DONE" })
     } catch (error) {
         res.status(500).send({ msg: "Something went wrong" })
     }

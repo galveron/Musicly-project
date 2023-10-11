@@ -73,7 +73,7 @@ class AudioPlayer extends React.Component {
                 />
                 <div className='playButtonContainer'>
                     <button disabled={src ? false : true} onClick={playing ? this.handlePause : this.handlePlay} className='playButton'>
-                        {playing ? <i class="fa-solid fa-pause"></i> : <i class="fa-solid fa-play"></i>}
+                        {playing ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
                     </button>
                 </div>
                 <div className='volumeDuration'>
