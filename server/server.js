@@ -261,7 +261,7 @@ app.post('/profile/edit/:username', async (req, res) => {
 })
 
 
-mongoose.connect(process.env.MONGOKEY).then(() => {
+mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("Connection to the database have been successful!");
     app.listen(3000, () => {
         console.log("App is running at port: 3000");

@@ -49,6 +49,7 @@ class AudioPlayer extends React.Component {
     }
 
     handleTimeUpdate = () => {
+        console.log("timeUpdate");
         this.setState({
             currentTime: this.audioRef.current.currentTime,
             duration: this.audioRef.current.duration,
@@ -69,29 +70,26 @@ class AudioPlayer extends React.Component {
     handleNextTrack = () => {
         if (this.state.currentTrack < this.state.tracks.length - 1) {
             this.setState(prevState => ({ currentTrack: prevState.currentTrack + 1 }));
-            console.log("next track loaded");
-            this.audioRef.current.pause()
-            this.setState({ volume: 0 })
-            this.audioRef.current = new Audio(this.state.tracks[this.state.currentTrack + 1].src)
+            this.audioRef.current.src = this.state.tracks[this.state.currentTrack + 1].src
             this.audioRef.current.onloadedmetadata = (e) => {
                 this.setState({ duration: e.target.duration })
-                this.handleTimeUpdate()
-                //this.automaticPLay()
-                this.handlePlay()
+                if (this.state.playing === true) {
+                   this.handlePlay() 
+                }
             }
-            //this.setState({playing: false})
-
         }
     }
 
     handlePrevTrack = () => {
         if (this.state.currentTrack > 0) {
             this.setState(prevState => ({ currentTrack: prevState.currentTrack - 1 }));
-            this.audioRef.current.pause()
-            this.audioRef.current = new Audio(this.state.tracks[this.state.currentTrack - 1].src)
-            //this.setState({playing: false})
-            this.automaticPLay()
-            //this.handlePlay()
+            this.audioRef.current.src = this.state.tracks[this.state.currentTrack - 1].src
+            this.audioRef.current.onloadedmetadata = (e) => {
+                this.setState({ duration: e.target.duration })
+                if (this.state.playing === true) {
+                   this.handlePlay() 
+                }
+            }
         }
     }
 
