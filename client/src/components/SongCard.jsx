@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useGlobalContext } from '../Views/Layout';
 
 export default function SongCard(props) {
-    const { song, removed, setRemoved, setCurrentPlaylist } = props;
+    const { song, removed, setRemoved } = props;
     const [user, setUser] = useState(Cookies.get('username'))
     const [favorites, setFavorites] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
+
+    const { currentPlaylist, setCurrentPlaylist } = useGlobalContext()
 
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -61,12 +64,12 @@ export default function SongCard(props) {
     function addCurrentPlaylist(e) {
         e.preventDefault();
         song.key && song.actions ?
-        ([{src: song.actions[1].uri, name: song.title}])
+        setCurrentPlaylist([...currentPlaylist, {src: song.actions[1].uri, name: song.title}])
             : song.key && !song.actions && song.hub ?
-            ([{src: song.hub.actions[1].uri, name: song.title}])
+            setCurrentPlaylist([...currentPlaylist, {src: song.hub.actions[1].uri, name: song.title}])
                 : song.play ?
-                ([{src: song.play, name: song.title}])
-                    : ([{src: song.tracks.actions[1].uri, name: song.title}])
+                setCurrentPlaylist([...currentPlaylist, {src: song.play, name: song.title}])
+                    : setCurrentPlaylist([...currentPlaylist, {src: song.tracks.actions[1].uri, name: song.title}])
     }
 
     const addToFavorites = async (event) => {
