@@ -38,24 +38,16 @@ export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [user, setUser] = useState(Cookies.get('username'));
     const [playSong, setPlaySong] = useState(null)
-    const [audio, setAudio] = useState(null)
+    const [currentPLaylist, setCurrentPlaylist] = useState([{src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/fa/c6/23/fac62369-02ae-6451-1942-76f38e2a61b0/mzaf_1964475913263690754.plus.aac.p.m4a", name: "Doja"},{src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview123/v4/6b/0b/21/6b0b219c-8f51-95cb-3e8f-11492d521421/mzaf_5836981206976882775.plus.aac.ep.m4a", name:"Woman"}])
 
-    useEffect(() => {
-        if (playSong) {
-            console.log(playSong);
-            const song = new Audio(playSong)
-            setAudio(song)
-        }
-    }, [playSong])
-
-    useEffect(() => {
-        try {
-            fetch("https://api.geoapify.com/v1/ipinfo?&apiKey=4df7fe498720447289870fc8b787ad73")
-                .then(response => response.json())
-                .then(result => setLocation(location => [...location, result.country.languages[0].iso_code, `Top 10 songs in ${result.country.name}`]))
-        }
-        catch (error) { console.log(error) }
-    }, [])
+    // useEffect(() => {
+    //     try {
+    //         fetch("https://api.geoapify.com/v1/ipinfo?&apiKey=4df7fe498720447289870fc8b787ad73")
+    //             .then(response => response.json())
+    //             .then(result => setLocation(location => [...location, result.country.languages[0].iso_code, `Top 10 songs in ${result.country.name}`]))
+    //     }
+    //     catch (error) { console.log(error) }
+    // }, [])
 
     useEffect(() => {
         try {
@@ -70,29 +62,29 @@ export default function Home() {
 
     }, [user])
 
-    async function fetchData(end, setVar) {
-        try {
-            const response = await fetch((url + end),
-                {
-                    method: 'GET',
-                    headers: {
-                        // 'X-RapidAPI-Key': 'afa85eef4cmsh155012efac6de0ap192459jsn58b3965d483a',
-                        'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
-                    }
-                })
-            const result = await response.json()
-            end.includes("search") ?
-                setVar(await result.tracks.hits)
-                : end.includes("related-artist") ?
-                    setVar(await result.data ? result.data : [song])
-                    : setVar(await result.tracks ? result.tracks : [song])
-        }
-        catch (error) { console.log(error) }
-    }
+    // async function fetchData(end, setVar) {
+    //     try {
+    //         const response = await fetch((url + end),
+    //             {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     // 'X-RapidAPI-Key': 'afa85eef4cmsh155012efac6de0ap192459jsn58b3965d483a',
+    //                     'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+    //                 }
+    //             })
+    //         const result = await response.json()
+    //         end.includes("search") ?
+    //             setVar(await result.tracks.hits)
+    //             : end.includes("related-artist") ?
+    //                 setVar(await result.data ? result.data : [song])
+    //                 : setVar(await result.tracks ? result.tracks : [song])
+    //     }
+    //     catch (error) { console.log(error) }
+    // }
 
     useEffect(() => {
         if (location) {
-            fetchData(`charts/track?locale=${location[0] ? location[0] : 'en-US'}&pageSize=10&startFrom=0`, setTopTenByCountry)
+            //fetchData(`charts/track?locale=${location[0] ? location[0] : 'en-US'}&pageSize=10&startFrom=0`, setTopTenByCountry)
 
             // setTimeout(() => {
             //     fetchData('charts/track?locale=HU&listId=genre-global-chart-2&pageSize=10&startFrom=0', setTopTenHipHop)
@@ -112,8 +104,8 @@ export default function Home() {
         }
 
         if (favSongKey) {
-            console.log(favSongKey);
-            fetchData(`songs/list-recommendations?key=${favSongKey}`, setRecTen)
+            //console.log(favSongKey);
+            //fetchData(`songs/list-recommendations?key=${favSongKey}`, setRecTen)
         }
 
         // fetchData(`songs/get-related-artist?id=${favArtistId}`, setRecArtistId)
@@ -126,9 +118,10 @@ export default function Home() {
 
     }, [favSongKey, favorites])
 
-    console.log(topTenByCountry);
+    //console.log(topTenByCountry);
+    console.log(currentPLaylist);
 
-    console.log(recTen);
+    //console.log(recTen);
     return (
         <>
             {isLoggedIn ?
@@ -138,16 +131,19 @@ export default function Home() {
                         title={location[1] ? location[1] : `Top 10 songs in the US`}
                         topTen={topTenByCountry}
                         setPlaySong={setPlaySong}
+                        setCurrentPlaylist={setCurrentPlaylist}
                     />
                     <Songs
                         title='Songs for you'
                         topTen={recTen}
                         setPlaySong={setPlaySong}
+                        setCurrentPlaylist={setCurrentPlaylist}
                     />
                     <Songs
                         title='Find something new to listen'
                         topTen={randomTen}
                         setPlaySong={setPlaySong}
+                        setCurrentPlaylist={setCurrentPlaylist}
                     />
                 </section>
                 : <section id='section' className='home-main-section'>
@@ -156,26 +152,25 @@ export default function Home() {
                             title={location[1]}
                             topTen={topTenByCountry}
                             setPlaySong={setPlaySong}
+                            setCurrentPlaylist={setCurrentPlaylist}
                         />
                         <Songs
                             title='Top 10 Hip-Hop/Rap songs'
                             topTen={topTenHipHop}
                             setPlaySong={setPlaySong}
+                            setCurrentPlaylist={setCurrentPlaylist}
                         />
                         <Songs
                             title='Find something new to listen'
                             topTen={randomTen}
                             setPlaySong={setPlaySong}
+                            setCurrentPlaylist={setCurrentPlaylist}
                         />
                     </div>
                 </section>}
             {
-                playSong ?
                     <section id="audioplayer" className='row'>
-                        <AudioPlayer src={playSong} />
-                    </section>
-                    : <section id="audioplayer" className='row'>
-                        <AudioPlayer />
+                        <AudioPlayer tracks={currentPLaylist} />
                     </section>
             }
         </>

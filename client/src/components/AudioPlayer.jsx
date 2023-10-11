@@ -5,13 +5,31 @@ class AudioPlayer extends React.Component {
         playing: false,
         currentTime: 0,
         duration: 0,
+        volume: 1,
         currentTimeSeconds: 0,
-        durationSeconds: 0
+        durationSeconds: 0,
+        currentTrack: 0,
+        tracks: [],
+        newTrack: 0,
     }
 
     audioRef = React.createRef()
 
+    componentDidMount() {
+        this.setState({ tracks: this.props.tracks });
+    }
+
+    automaticPLay() {
+        console.log("automatic play called");
+        if (this.state.playing === true) {
+            console.log("playing is true");
+            this.audioRef.current.play()
+        }
+    }
+
+
     handlePlay = () => {
+        console.log(this.audioRef.current.duration);
         this.audioRef.current.play()
         this.setState({ playing: true })
     }
@@ -51,31 +69,59 @@ class AudioPlayer extends React.Component {
     handleNextTrack = () => {
         if (this.state.currentTrack < this.state.tracks.length - 1) {
             this.setState(prevState => ({ currentTrack: prevState.currentTrack + 1 }));
+            console.log("next track loaded");
+            this.audioRef.current.pause()
+            this.setState({volume: 0})
+            this.audioRef.current = new Audio(this.state.tracks[this.state.currentTrack + 1].src)
+            this.audioRef.current.onloadedmetadata = (e) => {
+                this.setState({duration: e.target.duration})
+                this.handleTimeUpdate()
+                //this.automaticPLay()
+                this.handlePlay()
+            }
+            //this.setState({playing: false})
+            
         }
     }
 
     handlePrevTrack = () => {
         if (this.state.currentTrack > 0) {
             this.setState(prevState => ({ currentTrack: prevState.currentTrack - 1 }));
+            this.audioRef.current.pause()
+            this.audioRef.current = new Audio(this.state.tracks[this.state.currentTrack - 1].src)
+            //this.setState({playing: false})
+            this.automaticPLay()
+            //this.handlePlay()
         }
     }
 
     render() {
         const { playing, currentTime, duration, volume, currentTrack, tracks } = this.state
-        const { src } = this.props
-
-        return (
+        //const { src } = this.props
+        
+        if (tracks.length > 0) {
+          return (
             <div id='audioContainer'>
                 <audio
                     ref={this.audioRef}
-                    src={src}
+                    src={tracks[currentTrack].src}
                     onTimeUpdate={this.handleTimeUpdate}
+                    onEnded={this.handleNextTrack}
                 />
+                <div>
+                <button onClick={this.handlePrevTrack}>Prev</button>
                 <div className='playButtonContainer'>
-                    <button disabled={src ? false : true} onClick={playing ? this.handlePause : this.handlePlay} className='playButton'>
+                    <button disabled={tracks[currentTrack].src ? false : true} onClick={playing ? this.handlePause : this.handlePlay} className='playButton'>
                         {playing ? <i class="fa-solid fa-pause"></i> : <i class="fa-solid fa-play"></i>}
                     </button>
                 </div>
+                <button onClick={this.handleNextTrack}>Next</button>
+                </div>
+                {tracks[0].name ? 
+                  <p>{tracks[currentTrack].name}</p> 
+                  : <></> 
+                }
+                
                 <div className='volumeDuration'>
                     <label className='volumeLabel'>Volume
                         <input
@@ -101,7 +147,9 @@ class AudioPlayer extends React.Component {
                     </label>
                 </div>
             </div>
-        )
+        )  
+        }
+        
     }
 }
 

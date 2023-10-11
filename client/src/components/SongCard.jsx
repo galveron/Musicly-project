@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
 export default function SongCard(props) {
-    const { song, removed, setRemoved } = props;
+    const { song, removed, setRemoved, setCurrentPlaylist } = props;
     const [user, setUser] = useState(Cookies.get('username'))
     const [favorites, setFavorites] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
@@ -56,6 +56,17 @@ export default function SongCard(props) {
                     : props.setPlaySong(song.tracks.actions[1].uri)
 
         addToHistory();
+    }
+
+    function addCurrentPlaylist(e) {
+        e.preventDefault();
+        song.key && song.actions ?
+        ([{src: song.actions[1].uri, name: song.title}])
+            : song.key && !song.actions && song.hub ?
+            ([{src: song.hub.actions[1].uri, name: song.title}])
+                : song.play ?
+                ([{src: song.play, name: song.title}])
+                    : ([{src: song.tracks.actions[1].uri, name: song.title}])
     }
 
     const addToFavorites = async (event) => {
@@ -122,6 +133,7 @@ export default function SongCard(props) {
             <div className="container">
                 <h4><b>{song.title}</b></h4>
                 <button onClick={playClick}>Play</button>
+                <button onClick={addCurrentPlaylist}>Add to current playlist</button>
                 {song.artists ? song.artists.map(artist => <p key={artist.adamid}>{artist.alias}</p>) : <div>no data </div>}
                 {isFavorite ? <button onClick={removeFromFavorites}>Remove Favorite</button> : <button onClick={addToFavorites}>Add to favourites</button>}
             </div>

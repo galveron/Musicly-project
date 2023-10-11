@@ -8,7 +8,8 @@ export default function Songs(props) {
                 <h2>{title}</h2>
                 <div className='category' >
                     {topTen.length > 0 ?
-                        topTen.map((song) => <SongCard song={song} setPlaySong={props.setPlaySong} key={song.key ? song.key : song.track.key} />)
+                        topTen.map((song) => <SongCard song={song} setPlaySong={props.setPlaySong} 
+                        setCurrentPlaylist={props.setCurrentPlaylist} key={song.key ? song.key : song.track.key} />)
                         : <h2>Loading...</h2>}
                 </div>
             </article>
