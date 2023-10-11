@@ -370,7 +370,9 @@ h2,
 
 .playButtonContainer {
   margin: 10px;
-  margin-right: 50px
+  margin-right: 50px;
+  display: flex;
+  flex-direction: row;
 }
 
 .volume,

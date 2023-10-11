@@ -98,58 +98,59 @@ class AudioPlayer extends React.Component {
     render() {
         const { playing, currentTime, duration, volume, currentTrack, tracks } = this.state
         //const { src } = this.props
-
-        if (tracks.length > 0) {
-            return (
-                <div id='audioContainer'>
-                    <audio
-                        ref={this.audioRef}
-                        src={tracks[currentTrack].src}
-                        onTimeUpdate={this.handleTimeUpdate}
-                        onEnded={this.handleNextTrack}
-                    />
-                    <div>
-                        <button onClick={this.handlePrevTrack}>Prev</button>
+        if (tracks) {
+            if (tracks.length > 0) {
+                return (
+                    <div id='audioContainer'>
+                        <audio
+                            ref={this.audioRef}
+                            src={tracks[currentTrack].src}
+                            onTimeUpdate={this.handleTimeUpdate}
+                            onEnded={this.handleNextTrack}
+                        />
                         <div className='playButtonContainer'>
-                            <button disabled={tracks[currentTrack].src ? false : true} onClick={playing ? this.handlePause : this.handlePlay} className='playButton'>
-                                {playing ? <i class="fa-solid fa-pause"></i> : <i class="fa-solid fa-play"></i>}
-                            </button>
+                            <button onClick={this.handlePrevTrack}>Prev</button>
+                            <div >
+                                <button disabled={tracks[currentTrack].src ? false : true} onClick={playing ? this.handlePause : this.handlePlay} className='playButton'>
+                                    {playing ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
+                                </button>
+                            </div>
+                            <button onClick={this.handleNextTrack}>Next</button>
                         </div>
-                        <button onClick={this.handleNextTrack}>Next</button>
-                    </div>
-                    {tracks[0].name ?
-                        <p>{tracks[currentTrack].name}</p>
-                        : <></>
-                    }
+                        {tracks[0].name ?
+                            <p>{tracks[currentTrack].name}</p>
+                            : <></>
+                        }
 
-                    <div className='volumeDuration'>
-                        <label className='volumeLabel'>Volume
-                            <input
-                                className='volume'
-                                type="range"
-                                min={0}
-                                max={1}
-                                step={0.01}
-                                value={volume}
-                                onChange={this.handleVolumeChange}
-                            />
-                        </label>
-                        <label className='durationLabel'>{this.state.currentTimeSeconds + ' / ' + this.state.durationSeconds}
-                            <input
-                                className='duration'
-                                type="range"
-                                min={0}
-                                max={duration}
-                                step={0.01}
-                                value={currentTime}
-                                onChange={this.handleSeek}
-                            />
-                        </label>
+                        <div className='volumeDuration'>
+                            <label className='volumeLabel'>Volume
+                                <input
+                                    className='volume'
+                                    type="range"
+                                    min={0}
+                                    max={1}
+                                    step={0.01}
+                                    value={volume}
+                                    onChange={this.handleVolumeChange}
+                                />
+                            </label>
+                            <label className='durationLabel'>{this.state.currentTimeSeconds + ' / ' + this.state.durationSeconds}
+                                <input
+                                    className='duration'
+                                    type="range"
+                                    min={0}
+                                    max={duration}
+                                    step={0.01}
+                                    value={currentTime}
+                                    onChange={this.handleSeek}
+                                />
+                            </label>
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }
+
         }
-
     }
 }
 

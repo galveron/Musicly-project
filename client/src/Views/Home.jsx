@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Songs from '../components/Songs'
 import Cookies from 'js-cookie'
 import AudioPlayer from '../components/AudioPlayer'
+import { useGlobalContext } from './Layout'
 const url = 'https://shazam.p.rapidapi.com/'
 
 const song = {
@@ -38,7 +39,11 @@ export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [user, setUser] = useState(Cookies.get('username'));
     const [playSong, setPlaySong] = useState(null)
-    const [currentPLaylist, setCurrentPlaylist] = useState([{src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/fa/c6/23/fac62369-02ae-6451-1942-76f38e2a61b0/mzaf_1964475913263690754.plus.aac.p.m4a", name: "Doja"},{src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview123/v4/6b/0b/21/6b0b219c-8f51-95cb-3e8f-11492d521421/mzaf_5836981206976882775.plus.aac.ep.m4a", name:"Woman"}])
+    //const [currentPLaylist, setCurrentPlaylist] = useState([{ src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/fa/c6/23/fac62369-02ae-6451-1942-76f38e2a61b0/mzaf_1964475913263690754.plus.aac.p.m4a", name: "Doja" }, { src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview123/v4/6b/0b/21/6b0b219c-8f51-95cb-3e8f-11492d521421/mzaf_5836981206976882775.plus.aac.ep.m4a", name: "Woman" }])
+
+
+    const { currentPlaylist, setCurrentPlaylist } = useGlobalContext()
+
 
     // useEffect(() => {
     //     try {
@@ -119,7 +124,7 @@ export default function Home() {
     }, [favSongKey, favorites])
 
     //console.log(topTenByCountry);
-    console.log(currentPLaylist);
+    console.log(currentPlaylist);
 
     //console.log(recTen);
     return (
@@ -169,9 +174,9 @@ export default function Home() {
                     </div>
                 </section>}
             {
-                    <section id="audioplayer" className='row'>
-                        <AudioPlayer tracks={currentPLaylist} />
-                    </section>
+                <section id="audioplayer" className='row'>
+                    <AudioPlayer tracks={currentPlaylist} />
+                </section>
             }
         </>
     )

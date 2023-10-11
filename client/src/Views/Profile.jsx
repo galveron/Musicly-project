@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import AudioPlayer from './AudioPlayer';
+import AudioPlayer from '../components/AudioPlayer';
 
 function Profile() {
 
