@@ -113,10 +113,11 @@ app.get("/api/v1/:username/favoriteSongs", async (req, res, next) => {
 
 app.post("/api/v1/:username/favoriteSongs", async (req, res, next) => {
     try {
-        const { key, title, subtitle, images, url, artists, genres, albumadamid, youtubeurl, play } = req.body;
+        const { key, playlist, title, subtitle, images, url, artists, genres, albumadamid, youtubeurl, play } = req.body;
         const newFavoriteSong = {
             user: req.params.username,
             key,
+            playlist,
             title,
             subtitle,
             images,

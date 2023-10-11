@@ -99,7 +99,7 @@ class AudioPlayer extends React.Component {
         const { playing, currentTime, duration, volume, currentTrack, tracks } = this.state
         //const { src } = this.props
 
-        if (tracks.length > 0) {
+        if (tracks && tracks.length > 0) {
             return (
                 <div id='audioContainer'>
                     <audio
@@ -112,7 +112,7 @@ class AudioPlayer extends React.Component {
                         <button onClick={this.handlePrevTrack}>Prev</button>
                         <div className='playButtonContainer'>
                             <button disabled={tracks[currentTrack].src ? false : true} onClick={playing ? this.handlePause : this.handlePlay} className='playButton'>
-                                {playing ? <i class="fa-solid fa-pause"></i> : <i class="fa-solid fa-play"></i>}
+                                {playing ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
                             </button>
                         </div>
                         <button onClick={this.handleNextTrack}>Next</button>

@@ -5,6 +5,10 @@ export default function SongCard(props) {
     const { song, removed, setRemoved, setCurrentPlaylist } = props;
     const [user, setUser] = useState(Cookies.get('username'))
     const [favorites, setFavorites] = useState(null);
+    const [playlists, setPlaylists] = useState(null);
+    const [choosePlaylist, setChoosePlaylist] = useState(false);
+    const [creatingNewPlaylist, setCreatingNewPlaylist] = useState(false);
+    const [selectedPlaylist, setSelectedPlaylist] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
@@ -12,6 +16,16 @@ export default function SongCard(props) {
             const response = await fetch(`http://localhost:3000/api/v1/${user}/favoriteSongs`);
             const favoriteSongs = await response.json();
             setFavorites(favoriteSongs);
+
+            const playlists = [];
+            for (let favoriteSong of favoriteSongs) {
+                playlists.push(favoriteSong.playlist);
+            }
+            console.log(playlists);
+            const uniquePlaylists = [...new Set(playlists)];
+            if (uniquePlaylists.length > 0) {
+                setPlaylists(uniquePlaylists);
+            }
         }
         fetchFavorites();
     }, [song, user, removed])
@@ -69,49 +83,61 @@ export default function SongCard(props) {
                     : ([{src: song.tracks.actions[1].uri, name: song.title}])
     }
 
+    const handlePlaylistSelection = () => {
+        setChoosePlaylist(true);
+    }
+
     const addToFavorites = async (event) => {
-        try {
-            const newSong = song.key ? {
-                key: song.key,
-                title: song.title,
-                subtitle: song.subtitle,
-                images: song.images,
-                url: song.url,
-                artists: song.artists,
-                genres: song.genres,
-                albumadamid: song.albumadamid,
-                youtubeurl: song.youtubeurl,
-                play: song.hub ? song.hub.actions[1].uri : 'no data'
-            } : {
-                key: song.track.key,
-                title: song.track.title,
-                subtitle: song.track.subtitle,
-                images: song.track.images,
-                url: song.track.url,
-                artists: song.track.artists,
-                genres: song.track.genres,
-                albumadamid: song.track.albumadamid,
-                youtubeurl: song.track.youtubeurl,
-                play: song.track.actions[1].uri ? song.track.actions[1].uri : song.track.hub.actions[1].uri
-            };
+        event.preventDefault();
+        if (event.target.value !== 'newPlaylist') {
+            try {
+                const newSong = song.key ? {
+                    key: song.key,
+                    playlist: event.target.value ? event.target.value : event.target.newplaylist.value,
+                    title: song.title,
+                    subtitle: song.subtitle,
+                    images: song.images,
+                    url: song.url,
+                    artists: song.artists,
+                    genres: song.genres,
+                    albumadamid: song.albumadamid,
+                    youtubeurl: song.youtubeurl,
+                    play: song.hub ? song.hub.actions[1].uri : 'no data'
+                } : {
+                    key: song.track.key,
+                    playlist: event.target.value ? event.target.value : event.target.newplaylist.value,
+                    title: song.track.title,
+                    subtitle: song.track.subtitle,
+                    images: song.track.images,
+                    url: song.track.url,
+                    artists: song.track.artists,
+                    genres: song.track.genres,
+                    albumadamid: song.track.albumadamid,
+                    youtubeurl: song.track.youtubeurl,
+                    play: song.track.actions[1].uri ? song.track.actions[1].uri : song.track.hub.actions[1].uri
+                };
 
-            console.log(newSong);
+                console.log(newSong);
 
-            await fetch(`http://localhost:3000/api/v1/${user}/favoriteSongs`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify(newSong)
-            })
+                await fetch(`http://localhost:3000/api/v1/${user}/favoriteSongs`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify(newSong)
+                })
 
-            console.log('Song successfully added');
-            setIsFavorite(true);
-            event.target.innerHTML = 'Added to Favorites';
-            event.target.disabled = true;
-        } catch (err) {
-            console.log(err);
+                console.log('Song successfully added');
+                setIsFavorite(true);
+                setChoosePlaylist(false);
+                event.target.innerHTML = 'Added to Favorites';
+                event.target.disabled = true;
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            setCreatingNewPlaylist(true);
         }
     }
 
@@ -127,6 +153,18 @@ export default function SongCard(props) {
         }
     }
 
+    const playlistSelection = !creatingNewPlaylist ? (
+        <select onChange={addToFavorites} name='playlists' defaultValue={selectedPlaylist}>
+            {playlists ? playlists.map(playlist => <option key={playlist} value={playlist}>{playlist}</option>) : <option value={'newPlaylist'}>Create new</option>}
+            <option value={'newPlaylist'}>Create new playlist</option>
+        </select>
+    ) : (
+        <form action='' onSubmit={addToFavorites}>
+            <input type='text' required name='newplaylist' placeholder='Name your playlist'></input>
+            <button type='submit'>Add Playlist</button>
+        </form>
+    )
+
     return song.key ? (
         <div key={song.key} className="card">
             <img src={song.images ? song.images.coverart : '/placeholder.png'} className="img" />
@@ -135,7 +173,7 @@ export default function SongCard(props) {
                 <button onClick={playClick}>Play</button>
                 <button onClick={addCurrentPlaylist}>Add to current playlist</button>
                 {song.artists ? song.artists.map(artist => <p key={artist.adamid}>{artist.alias}</p>) : <div>no data </div>}
-                {isFavorite ? <button onClick={removeFromFavorites}>Remove Favorite</button> : <button onClick={addToFavorites}>Add to favourites</button>}
+                {isFavorite ? <button onClick={removeFromFavorites}>Remove Favorite</button> : choosePlaylist ? playlistSelection : <button onClick={handlePlaylistSelection}>Add to favourites</button>}
             </div>
         </div>
     ) : (

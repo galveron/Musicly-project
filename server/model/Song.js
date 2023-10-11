@@ -4,6 +4,7 @@ const {Schema, model} = mongoose;
 
 const songSchema = new Schema({
         user: String,
+        playlist: String,
         key: String,
         title: String,
         subtitle: String,
