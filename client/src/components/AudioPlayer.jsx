@@ -22,14 +22,12 @@ class AudioPlayer extends React.Component {
     automaticPLay() {
         console.log("automatic play called");
         if (this.state.playing === true) {
-            console.log("playing is true");
             this.audioRef.current.play()
         }
     }
 
 
     handlePlay = () => {
-        console.log(this.audioRef.current.duration);
         this.audioRef.current.play()
         this.setState({ playing: true })
     }
@@ -49,7 +47,6 @@ class AudioPlayer extends React.Component {
     }
 
     handleTimeUpdate = () => {
-        console.log("timeUpdate");
         this.setState({
             currentTime: this.audioRef.current.currentTime,
             duration: this.audioRef.current.duration,

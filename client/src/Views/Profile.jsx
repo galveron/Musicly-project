@@ -160,7 +160,6 @@ function Profile() {
     }
 
     return (
-        <>
             <section id='section' className='col profile'>
                 {
                     user && !edit && loggedIn && !checkHistory ? (
@@ -223,10 +222,6 @@ function Profile() {
                             )
                 }
             </section>
-            <section id="audioplayer" className='row'>
-                <AudioPlayer />
-            </section>
-        </>
     )
 
 }

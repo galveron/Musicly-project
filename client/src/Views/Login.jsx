@@ -138,9 +138,6 @@ function Login() {
                     }
                 </article>
             </section>
-            <section id="audioplayer" className='row'>
-                <AudioPlayer />
-            </section>
         </>
     )
 

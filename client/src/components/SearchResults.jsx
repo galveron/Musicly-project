@@ -26,15 +26,6 @@ function SearchResults(props) {
             ) : (
                 <div></div>
             )}
-            {/* {
-                playSong ?
-                    <section className='audioplayer'>
-                        <AudioPlayer src={playSong} />
-                    </section>
-                    : (
-                        <></>
-                    )
-            } */}
         </>
     )
 }
