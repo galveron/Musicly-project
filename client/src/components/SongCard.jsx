@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useGlobalContext } from '../Views/Layout';
 
 export default function SongCard(props) {
-    const { song, removed, setRemoved, setCurrentPlaylist } = props;
-    const [user, setUser] = useState(Cookies.get('username'))
+    const { song, removed, setRemoved } = props;
+    const [user, setUser] = useState(Cookies.get('username'));
     const [favorites, setFavorites] = useState(null);
     const [playlists, setPlaylists] = useState(null);
     const [choosePlaylist, setChoosePlaylist] = useState(false);
     const [creatingNewPlaylist, setCreatingNewPlaylist] = useState(false);
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
+
+    const { currentPlaylist, setCurrentPlaylist } = useGlobalContext();
 
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -28,60 +31,56 @@ export default function SongCard(props) {
             }
         }
         fetchFavorites();
-    }, [song, user, removed])
+    }, [song, user, removed]);
 
     useEffect(() => {
         if (favorites !== null && song) {
             for (let favoriteSong of favorites) {
                 if (favoriteSong.key == song.key) {
                     setIsFavorite(true);
-                }
-            }
-        }
-    }, [favorites, song])
+                };
+            };
+        };
+    }, [favorites, song]);
 
     async function addToHistory() {
         const { title, subtitle } = song;
         const newSong = {
             songArtist: subtitle,
             songTitle: title,
-        }
+        };
 
         await fetch(`http://localhost:3000/history/${user}`, {
             method: "POST",
             headers: {
-                "Content-type": "application/json"
+                "Content-type": "application/json",
             },
-            body: JSON.stringify(newSong)
-        })
-
-        console.log("Added to history");
-    }
+            body: JSON.stringify(newSong),
+        });
+    };
 
     function playClick(e) {
         e.preventDefault();
-        console.log(song);
         song.key && song.actions ?
-            props.setPlaySong(song.actions[1].uri)
+            setCurrentPlaylist([{ src: song.actions[1].uri, name: song.title, artist: song.subtitle }])
             : song.key && !song.actions && song.hub ?
-                props.setPlaySong(song.hub.actions[1].uri)
+                setCurrentPlaylist([{ src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle }])
                 : song.play ?
-                    props.setPlaySong(song.play)
-                    : props.setPlaySong(song.tracks.actions[1].uri)
-
+                    setCurrentPlaylist([{ src: song.play, name: song.title, artist: song.subtitle }])
+                    : setCurrentPlaylist([{ src: song.tracks.actions[1].uri, name: song.title, artist: song.subtitle }])
         addToHistory();
     }
 
     function addCurrentPlaylist(e) {
         e.preventDefault();
         song.key && song.actions ?
-        ([{src: song.actions[1].uri, name: song.title}])
+            setCurrentPlaylist([...currentPlaylist, { src: song.actions[1].uri, name: song.title, artist: song.subtitle }])
             : song.key && !song.actions && song.hub ?
-            ([{src: song.hub.actions[1].uri, name: song.title}])
+                setCurrentPlaylist([...currentPlaylist, { src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle }])
                 : song.play ?
-                ([{src: song.play, name: song.title}])
-                    : ([{src: song.tracks.actions[1].uri, name: song.title}])
-    }
+                    setCurrentPlaylist([...currentPlaylist, { src: song.play, name: song.title, artist: song.subtitle }])
+                    : setCurrentPlaylist([...currentPlaylist, { src: song.tracks.actions[1].uri, name: song.tracks.title, artist: song.tracks.subtitle }])
+    };
 
     const handlePlaylistSelection = () => {
         setChoosePlaylist(true);
@@ -144,14 +143,14 @@ export default function SongCard(props) {
     const removeFromFavorites = async () => {
         try {
             await fetch(`http://localhost:3000/api/v1/${user}/favoriteSongs/${song.key}`, {
-                method: "DELETE"
+                method: "DELETE",
             });
             console.log('Song deleted from favorites');
             setRemoved(!removed);
         } catch (err) {
             console.log(err);
-        }
-    }
+        };
+    };
 
     const playlistSelection = !creatingNewPlaylist ? (
         <select onChange={addToFavorites} name='playlists' defaultValue={selectedPlaylist}>
@@ -185,5 +184,5 @@ export default function SongCard(props) {
                 {isFavorite ? <button onClick={removeFromFavorites}>Remove Favorite</button> : <button onClick={addToFavorites}>Add to favourites</button>}
             </div>
         </div>
-    )
-}
+    );
+};
