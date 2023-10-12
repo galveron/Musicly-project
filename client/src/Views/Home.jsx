@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Songs from '../components/Songs';
 import Cookies from 'js-cookie';
 import { useGlobalContext } from './Layout';
+const url = 'https://shazam.p.rapidapi.com/'
 
 const song = {
     artists: [{
@@ -37,14 +38,14 @@ export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [user, setUser] = useState(Cookies.get('username'));
 
-    // useEffect(() => {
-    //     try {
-    //         fetch("https://api.geoapify.com/v1/ipinfo?&apiKey=4df7fe498720447289870fc8b787ad73")
-    //             .then(response => response.json())
-    //             .then(result => setLocation(location => [...location, result.country.languages[0].iso_code, `Top 10 songs in ${result.country.name}`]))
-    //     }
-    //     catch (error) { console.log(error) }
-    // }, [])
+    useEffect(() => {
+        try {
+            fetch("https://api.geoapify.com/v1/ipinfo?&apiKey=4df7fe498720447289870fc8b787ad73")
+                .then(response => response.json())
+                .then(result => setLocation(location => [...location, result.country.languages[0].iso_code, `Top 10 songs in ${result.country.name}`]))
+        }
+        catch (error) { console.log(error) }
+    }, [])
 
     useEffect(() => {
         try {
@@ -59,29 +60,29 @@ export default function Home() {
 
     }, [user]);
 
-    // async function fetchData(end, setVar) {
-    //     try {
-    //         const response = await fetch((url + end),
-    //             {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     // 'X-RapidAPI-Key': 'afa85eef4cmsh155012efac6de0ap192459jsn58b3965d483a',
-    //                     'X-RapidAPI-Host': 'shazam.p.rapidapi.com',
-    //                 }
-    //             });
-    //         const result = await response.json();
-    //         end.includes("search") ?
-    //             setVar(await result.tracks.hits)
-    //             : end.includes("related-artist") ?
-    //                 setVar(await result.data ? result.data : [song])
-    //                 : setVar(await result.tracks ? result.tracks : [song])
-    //     }
-    //     catch (error) { console.log(error) };
-    // };
+    async function fetchData(end, setVar) {
+        try {
+            const response = await fetch((url + end),
+                {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key': 'afa85eef4cmsh155012efac6de0ap192459jsn58b3965d483a',
+                        'X-RapidAPI-Host': 'shazam.p.rapidapi.com',
+                    }
+                });
+            const result = await response.json();
+            end.includes("search") ?
+                setVar(await result.tracks.hits)
+                : end.includes("related-artist") ?
+                    setVar(await result.data ? result.data : [song])
+                    : setVar(await result.tracks ? result.tracks : [song])
+        }
+        catch (error) { console.log(error) };
+    };
 
     useEffect(() => {
         if (location) {
-            //fetchData(`charts/track?locale=${location[0] ? location[0] : 'en-US'}&pageSize=10&startFrom=0`, setTopTenByCountry);
+            fetchData(`charts/track?locale=${location[0] ? location[0] : 'en-US'}&pageSize=10&startFrom=0`, setTopTenByCountry);
 
             // setTimeout(() => {
             //     fetchData('charts/track?locale=HU&listId=genre-global-chart-2&pageSize=10&startFrom=0', setTopTenHipHop)
