@@ -1,15 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './Views/Home.jsx'
-import './index.css'
-import Login from './Views/Login.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './Views/Home.jsx';
+import './index.css';
+import Login from './Views/Login.jsx';
 import Search from './views/Search.jsx';
 import Favorites from './views/Favorites.jsx';
 import Profile from './Views/Profile.jsx';
 import { Layout } from './Views/Layout.jsx';
-
-
 
 export default function Main() {
   return (
@@ -27,8 +25,7 @@ export default function Main() {
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<Main />);
-

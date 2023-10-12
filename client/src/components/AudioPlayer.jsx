@@ -1,5 +1,4 @@
 import React from 'react';
-import { GlobalContext } from '../Views/Layout';
 
 class AudioPlayer extends React.Component {
     state = {
@@ -17,7 +16,6 @@ class AudioPlayer extends React.Component {
     audioRef = React.createRef()
 
     componentDidMount() {
-
         this.setState({ tracks: this.props.tracks });
     }
 
@@ -41,73 +39,73 @@ class AudioPlayer extends React.Component {
     }
 
     handlePause = () => {
-        this.audioRef.current.pause()
-        this.setState({ playing: false })
-    }
-
+        this.audioRef.current.pause();
+        this.setState({ playing: false });
+    };
+    //convert duration times to seconds
     time_convert = (num) => {
         if (isFinite(num)) {
             let minutes = Math.floor(num / 60);
-            let seconds = num % 60
+            let seconds = num % 60;
             return minutes + ":" + seconds;
-        }
-        return 0
-    }
+        };
+        return 0;
+    };
 
     handleTimeUpdate = () => {
         this.setState({
             currentTime: this.audioRef.current.currentTime,
-            duration: this.audioRef.current.duration,
+            duration: isFinite(this.audioRef.current.duration) ? this.audioRef.current.duration : 0,
             currentTimeSeconds: this.time_convert(Math.round(this.audioRef.current.currentTime)),
-            durationSeconds: this.time_convert(Math.round(this.audioRef.current.duration))
-        })
-    }
+            durationSeconds: this.time_convert(Math.round(this.audioRef.current.duration)),
+        });
+    };
 
     handleVolumeChange = (e) => {
         this.setState({ volume: e.target.value });
         this.audioRef.current.volume = e.target.value;
-    }
+    };
 
     handleSeek = (e) => {
         this.audioRef.current.currentTime = e.target.value;
-    }
+    };
 
     handleNextTrack = () => {
         if (this.state.currentTrack < this.state.tracks.length - 1) {
             this.setState(prevState => ({ currentTrack: prevState.currentTrack + 1 }));
-            this.audioRef.current.src = this.state.tracks[this.state.currentTrack + 1].src
+            this.audioRef.current.src = this.state.tracks[this.state.currentTrack + 1].src;
             this.audioRef.current.onloadedmetadata = (e) => {
-                this.setState({ duration: e.target.duration })
+                this.setState({ duration: e.target.duration });
                 if (this.state.playing === true) {
-                    this.handlePlay()
-                }
-            }
-        }
-    }
+                    this.handlePlay();
+                };
+            };
+        };
+    };
 
     handlePrevTrack = () => {
         if (this.state.currentTrack > 0) {
             this.setState(prevState => ({ currentTrack: prevState.currentTrack - 1 }));
-            this.audioRef.current.src = this.state.tracks[this.state.currentTrack - 1].src
+            this.audioRef.current.src = this.state.tracks[this.state.currentTrack - 1].src;
             this.audioRef.current.onloadedmetadata = (e) => {
-                this.setState({ duration: e.target.duration })
+                this.setState({ duration: e.target.duration });
                 if (this.state.playing === true) {
-                    this.handlePlay()
-                }
-            }
-        }
-    }
+                    this.handlePlay();
+                };
+            };
+        };
+    };
 
     handleBackSeek = () => {
-        this.audioRef.current.currentTime -= 15
-    }
+        this.audioRef.current.currentTime -= 15;
+    };
 
     handleForwardSeek = () => {
-        this.audioRef.current.currentTime += 15
-    }
+        this.audioRef.current.currentTime += 15;
+    };
 
     render() {
-        const { playing, currentTime, duration, volume, currentTrack, tracks } = this.state
+        const { playing, currentTime, duration, volume, currentTrack, tracks } = this.state;
 
         if (tracks) {
             if (tracks.length > 0) {
@@ -147,6 +145,33 @@ class AudioPlayer extends React.Component {
 
                             <label className='row' id='durationLabel'>
                                 <div id="duartion-time">{this.state.currentTimeSeconds + ' / ' + this.state.durationSeconds}</div>
+                                <button onClick={this.handleForwardSeek}>15{">>"}</button>
+                                <button onClick={this.handleNextTrack}>Next</button>
+                            </label>
+                        </div>
+                        {tracks[currentTrack].name ?
+                            <><p>{tracks[currentTrack].name}</p>
+                                {
+                                    tracks[currentTrack].artist ?
+                                        <p>{tracks[currentTrack].artist}</p>
+                                        : <></>
+                                }
+                            </>
+                            : <></>
+                        }
+                        <div className='volumeDuration'>
+                            <label className='volumeLabel'>Volume
+                                <input
+                                    className='volume'
+                                    type="range"
+                                    min={0}
+                                    max={1}
+                                    step={0.01}
+                                    value={volume}
+                                    onChange={this.handleVolumeChange}
+                                />
+                            </label>
+                            <label className='durationLabel'>{this.state.currentTimeSeconds + ' / ' + this.state.durationSeconds}
                                 <input
                                     className='duration'
                                     type="range"
@@ -172,10 +197,10 @@ class AudioPlayer extends React.Component {
                             </label>
                         </div>
                     </div>
-                )
-            }
-        }
-    }
-}
+                );
+            };
+        };
+    };
+};
 
-export default AudioPlayer
+export default AudioPlayer;

@@ -1,20 +1,7 @@
 import SongCard from './SongCard';
-import ArtistCard from './ArtistCard';
-import { useState, useEffect } from 'react'
-import AudioPlayer from './AudioPlayer';
 
 function SearchResults(props) {
     const { songResults, artistResults } = props;
-    // const [playSong, setPlaySong] = useState(null)
-    // const [audio, setAudio] = useState(null)
-
-    // useEffect(() => {
-    //     if (playSong) {
-    //         console.log(playSong);
-    //         const song = new Audio(playSong)
-    //         setAudio(song)
-    //     }
-    // }, [playSong])
 
     return (
         <>
@@ -27,7 +14,7 @@ function SearchResults(props) {
                 <div></div>
             )}
         </>
-    )
-}
+    );
+};
 
 export default SearchResults;

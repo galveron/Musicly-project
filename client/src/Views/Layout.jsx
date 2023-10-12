@@ -1,22 +1,22 @@
-import React, { useContext, createContext, useState } from 'react'
-import Side from '../components/Side'
-import Navbar from '../components/Navbar'
-import { Outlet } from 'react-router-dom'
-import AudioPlayer from '../components/AudioPlayer'
+import React, { useContext, createContext, useState } from 'react';
+import Side from '../components/Side';
+import Navbar from '../components/Navbar';
+import { Outlet } from 'react-router-dom';
+import AudioPlayer from '../components/AudioPlayer';
 
-export const GlobalContext = createContext(null)
+export const GlobalContext = createContext(null);
 
 export const useGlobalContext = () => {
-    const globalContext = useContext(GlobalContext)
+    const globalContext = useContext(GlobalContext);
     if (!globalContext) {
-        throw new Error('error')
-    }
-    return globalContext
-}
+        throw new Error('error');
+    };
+    return globalContext;
+};
 
 export function Layout() {
-    const [currentPlaylist, setCurrentPlaylist] = useState([])
-    const [logged, setLogged] = useState(false)
+    const [currentPlaylist, setCurrentPlaylist] = useState([]);
+    const [logged, setLogged] = useState(false);
 
     return (
         <>
@@ -33,5 +33,5 @@ export function Layout() {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};

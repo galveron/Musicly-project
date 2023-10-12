@@ -5,65 +5,65 @@ import { Link } from 'react-router-dom';
 
 function Profile() {
 
-    const [cookieUsername, setCookieUsername] = useState(Cookies.get('username'))
-    const [user, setUser] = useState(null)
-    const [edit, setEdit] = useState(null)
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [oldPassword, setOldPassword] = useState("")
-    const [newPassword, setNewPassword] = useState("")
-    const [mostListenedSong, setMostListenedSong] = useState("You haven't listened to any songs yet")
-    const [mostListenedArtist, setMostListenedArtist] = useState("You haven't listened to any artists yet")
-    const [history, setHistory] = useState([])
-    const [checkHistory, setCheckHistory] = useState(null)
-    const [loggedIn, setLoggedIn] = useState(Cookies.get("authenticated"))
-    const [historyDeleted, setHistoryDeleted] = useState(null)
-    const { logged, setLogged} = useGlobalContext();
+    const [cookieUsername, setCookieUsername] = useState(Cookies.get('username'));
+    const [user, setUser] = useState(null);
+    const [edit, setEdit] = useState(null);
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [mostListenedSong, setMostListenedSong] = useState("You haven't listened to any songs yet");
+    const [mostListenedArtist, setMostListenedArtist] = useState("You haven't listened to any artists yet");
+    const [history, setHistory] = useState([]);
+    const [checkHistory, setCheckHistory] = useState(null);
+    const [loggedIn, setLoggedIn] = useState(Cookies.get("authenticated"));
+    const [historyDeleted, setHistoryDeleted] = useState(null);
+    const { logged, setLogged } = useGlobalContext();
 
     //fetching user and set details
     useEffect(() => {
         if (loggedIn) {
-         async function fetchData() {
-            const response = await fetch(`http://localhost:3000/profile/${cookieUsername}`)
-            const result = await response.json()
-            setUser(result)
-        }
-        fetchData()
-        setHistoryDeleted(null)   
-        }
-    }, [cookieUsername, historyDeleted, loggedIn])
+            async function fetchData() {
+                const response = await fetch(`http://localhost:3000/profile/${cookieUsername}`);
+                const result = await response.json();
+                setUser(result);
+            };
+            fetchData();
+            setHistoryDeleted(null);
+        };
+    }, [cookieUsername, historyDeleted, loggedIn]);
 
     useEffect(() => {
         if (user) {
-            setUsername(user.username)
-            setEmail(user.email)
-            setHistory(user.history)
-        }
-    }, [user])
+            setUsername(user.username);
+            setEmail(user.email);
+            setHistory(user.history);
+        };
+    }, [user]);
 
     useEffect(() => {
         mostListenedInfo();
-    }, [historyDeleted])
+    }, [historyDeleted]);
 
     //calculating info based on history
     async function mostListenedInfo() {
         const response = await fetch(`http://localhost:3000/history/${cookieUsername}`);
         const returnedUser = await response.json();
 
-        const { albums, artists, songs } = returnedUser.history;
+        const { artists, songs } = returnedUser.history;
 
         if (songs.length > 0) {
             setMostListenedSong(sortByListenCount(songs).val);
         } else if (songs.length === 0) {
-            setMostListenedSong("You haven't listened to any songs yet")
-        }
+            setMostListenedSong("You haven't listened to any songs yet");
+        };
 
         if (artists.length > 0) {
             setMostListenedArtist(sortByListenCount(artists).val);
         } else if (artists.length === 0) {
-            setMostListenedArtist("You haven't listened to any artists yet")
-        }
-    }
+            setMostListenedArtist("You haven't listened to any artists yet");
+        };
+    };
 
     function sortByListenCount(array) {
         const uniqueVals = [... new Set(array)];
@@ -72,38 +72,38 @@ function Profile() {
             for (let item of array) {
                 if (item === val) {
                     valCount++;
-                }
-            }
+                };
+            };
             return { val: val, count: valCount };
-        })
+        });
         numberArray.sort((item1, item2) => item2.count - item1.count);
         return numberArray[0];
-    }
+    };
 
     //button event functions
     function editButton(e) {
         e.preventDefault();
-        setEdit(true)
-    }
+        setEdit(true);
+    };
 
     function cancelButton(e) {
         e.preventDefault();
-        setEdit(null)
-        setCheckHistory(null)
-    }
+        setEdit(null);
+        setCheckHistory(null);
+    };
 
     function logOutButton(e) {
         e.preventDefault();
-        Cookies.remove('username')
-        Cookies.remove('authenticated')
-        setLoggedIn(false)
-        setLogged(false)
-    }
+        Cookies.remove('username');
+        Cookies.remove('authenticated');
+        setLoggedIn(false);
+        setLogged(false);
+    };
 
     function historyButton(e) {
         e.preventDefault();
-        setCheckHistory(true)
-    }
+        setCheckHistory(true);
+    };
 
     async function deleteHistoryButton(e) {
         e.preventDefault();
@@ -111,15 +111,15 @@ function Profile() {
             method: "DELETE",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Accept": "application/json"
-            }
-        })
-        const result = await response.json()
+                "Accept": "application/json",
+            },
+        });
+        const result = await response.json();
         if (result.msg === "history deleted") {
-            setHistoryDeleted(true)
-        }
+            setHistoryDeleted(true);
+        };
         console.log(result.msg);
-    }
+    };
 
     //handling submits
     async function handleEdit(e) {
@@ -129,30 +129,26 @@ function Profile() {
             email: email,
             password: oldPassword,
             newPassword: newPassword,
-        }
+        };
         const response = await fetch(`http://localhost:3000/profile/edit/${cookieUsername}`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Accept": "application/json"
+                "Accept": "application/json",
             },
-            body: JSON.stringify(updatedUser)
-        })
-        const result = await response.json()
+            body: JSON.stringify(updatedUser),
+        });
+        const result = await response.json();
         if (result.msg === "DONE") {
-            Cookies.set('username', username, { expires: 1 })
-            setCookieUsername(username)
-            setEdit(null)
-            setOldPassword("")
-            setNewPassword("")
+            Cookies.set('username', username, { expires: 1 });
+            setCookieUsername(username);
+            setEdit(null);
+            setOldPassword("");
+            setNewPassword("");
         } else {
             window.alert(result.msg);
-        }
-    }
-    // function reloadFunction() {
-    //     window.location.reload(false)
-    //     window.location.replace('http://localhost:5173/login')
-    // }
+        };
+    };
 
     return (
         <section id='section' className='col profile'>
@@ -166,7 +162,6 @@ function Profile() {
                                 <div>Email: {user.email}</div>
                                 <div>Your most listened song: {mostListenedSong}</div>
                                 <div>Your most listened artist: {mostListenedArtist}</div>
-                                {/* <div>Your most listened album: {mostListenedAlbum}</div> */}
                             </div>
                             <div className='buttonContainer'>
                                 <button id='check-history' type='button' onClick={historyButton}>Check history</button>
@@ -217,8 +212,7 @@ function Profile() {
                         )
             }
         </section>
-    )
+    );
+};
 
-}
-
-export default Profile
+export default Profile;

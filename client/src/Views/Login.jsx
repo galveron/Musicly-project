@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useGlobalContext } from '../Views/Layout';
 
@@ -8,25 +8,24 @@ function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [registered, setRegistered] = useState(null)
-    const { logged, setLogged} = useGlobalContext();
-
+    const [registered, setRegistered] = useState(null);
+    const { logged, setLogged } = useGlobalContext();
     //changing states when buttons clicked
     function logInButton(e) {
         e.preventDefault();
-        setLoginState("logIn")
-    }
+        setLoginState("logIn");
+    };
 
     function registerButton(e) {
         e.preventDefault();
-        setLoginState("Register")
-    }
+        setLoginState("Register");
+    };
 
     function backButton(e) {
         e.preventDefault();
-        setLoginState(null)
-        setRegistered(null)
-    }
+        setLoginState(null);
+        setRegistered(null);
+    };
 
     //handling form submits
     async function handleRegister(e) {
@@ -34,54 +33,48 @@ function Login() {
         const newUser = {
             username: username,
             password: password,
-            email: email
-        }
+            email: email,
+        };
         const response = await fetch('http://localhost:3000/register', {
             method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Accept": "application/json"
+                "Accept": "application/json",
             },
-            body: JSON.stringify(newUser)
-        })
-        const result = await response.json()
-        setRegistered(result.msg)
-        setUsername("")
-        setEmail("")
-        setPassword("")
-    }
+            body: JSON.stringify(newUser),
+        });
+        const result = await response.json();
+        setRegistered(result.msg);
+        setUsername("");
+        setEmail("");
+        setPassword("");
+    };
 
     async function handleLogIn(e) {
         e.preventDefault();
         const logInDetails = {
             username: username,
-            password: password
-        }
+            password: password,
+        };
         const response = await fetch('http://localhost:3000/login', {
             method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Accept": "application/json"
+                "Accept": "application/json",
             },
-            body: JSON.stringify(logInDetails)
-        })
+            body: JSON.stringify(logInDetails),
+        });
         const data = await response.json();
         if (data.msg) {
             window.alert(data.msg);
         }
         if (data.status === 'OK') {
-            setLoginState("loggedIn")
-            Cookies.set('username', data.user.username, { expires: 1 })
-            Cookies.set('authenticated', true, { expires: 1 })
-            setLogged(true)
-        }
-    }
-
-    // function reloadFunction() {
-    //     window.location.reload(false)
-    //     window.location.replace('http://localhost:5173/')
-    // }
-
+            setLoginState("loggedIn");
+            Cookies.set('username', data.user.username, { expires: 1 });
+            Cookies.set('authenticated', true, { expires: 1 });
+            setLogged(true);
+        };
+    };
 
     return (
         <>
@@ -140,8 +133,7 @@ function Login() {
                 </article>
             </section>
         </>
-    )
+    );
+};
 
-}
-
-export default Login
+export default Login;
