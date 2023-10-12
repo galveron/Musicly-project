@@ -1,10 +1,8 @@
-import SongCard from '../components/SongCard';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import PlaylistSection from '../components/PlaylistSection';
 
 import { useState, useEffect } from 'react';
-import { useGlobalContext } from '../Views/Layout';
 
 function Favorites() {
     const [user, setUser] = useState(Cookies.get('username'));
@@ -51,7 +49,7 @@ function Favorites() {
 
     return user ? (
         <section id='section' className='col'>
-            {playlists?.length > 0 ? playlists.map(playlist => <PlaylistSection key={playlist} name={playlist} songs={favoriteSongs.filter(song => song.playlist === playlist)} setPlaySong={setPlaySong} removed={removed} setRemoved={setRemoved} />) : null }
+            {playlists?.length > 0 ? playlists.map(playlist => <PlaylistSection key={playlist} name={playlist} songs={favoriteSongs.filter(song => song.playlist === playlist)} removed={removed} setRemoved={setRemoved} />) : null }
         </section>
     )
         : (

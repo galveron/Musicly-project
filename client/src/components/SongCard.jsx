@@ -24,7 +24,6 @@ export default function SongCard(props) {
             for (let favoriteSong of favoriteSongs) {
                 playlists.push(favoriteSong.playlist);
             }
-            console.log(playlists);
             const uniquePlaylists = [...new Set(playlists)];
             if (uniquePlaylists.length > 0) {
                 setPlaylists(uniquePlaylists);
@@ -38,9 +37,9 @@ export default function SongCard(props) {
             for (let favoriteSong of favorites) {
                 if (favoriteSong.key == song.key) {
                     setIsFavorite(true);
-                };
-            };
-        };
+                }
+            }
+        }
     }, [favorites, song]);
 
     async function addToHistory() {
@@ -80,7 +79,7 @@ export default function SongCard(props) {
                 : song.play ?
                     setCurrentPlaylist([...currentPlaylist, { src: song.play, name: song.title, artist: song.subtitle }])
                     : setCurrentPlaylist([...currentPlaylist, { src: song.tracks.actions[1].uri, name: song.tracks.title, artist: song.tracks.subtitle }])
-    };
+    }
 
     const handlePlaylistSelection = () => {
         setChoosePlaylist(true);
