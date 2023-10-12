@@ -171,7 +171,6 @@ export default function SongCard(props) {
                 {song.artists ? song.artists.map(artist => <p id="artist-name" key={artist.adamid}>{artist.alias}</p>) : <div>no data </div>}
                 <button onClick={playClick}>Play</button>
                 <button onClick={addCurrentPlaylist}>Add to current playlist</button>
-                {song.artists ? song.artists.map(artist => <p key={artist.adamid}>{artist.alias}</p>) : <div>no data </div>}
                 {isFavorite ? <button onClick={removeFromFavorites}>Remove Favorite</button> : choosePlaylist ? playlistSelection : <button onClick={handlePlaylistSelection}>Add to favourites</button>}
             </div>
         </div>

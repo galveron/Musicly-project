@@ -155,36 +155,38 @@ function Profile() {
             {
                 user && !edit && loggedIn && !checkHistory ? (
                     <>
-                        <section className='profileDetails'>
-                            <div id='details' >
-                                <h3>User details</h3>
-                                <div>Username: {user.username}</div>
-                                <div>Email: {user.email}</div>
-                                <div>Your most listened song: {mostListenedSong}</div>
-                                <div>Your most listened artist: {mostListenedArtist}</div>
-                            </div>
-                            <div className='buttonContainer'>
-                                <button id='check-history' type='button' onClick={historyButton}>Check history</button>
-                                <button is='edit-user' type='button' onClick={editButton}>Edit user</button>
-                                <button id='log-out' type='button' onClick={logOutButton}>Log Out</button>
+                        <section className='row' id='profileDetails'>
+                            <div className="col" id='details' >
+                                <h3 className="row">User details</h3>
+                                <div className="row" id="data-row"><div id="data-type">Username: </div><div id="data">{user.username}</div></div>
+                                <div className="row" id="data-row"><div id="data-type">Email: </div><div id="data">{user.email}</div></div>
+                                <div className="row" id="data-row"><div id="data-type">Your most listened song: </div><div id="data">{mostListenedSong}</div></div>
+                                <div className="row" id="data-row"><div id="data-type">Your most listened artist: </div><div id="data">{mostListenedArtist}</div></div>
+
+                                <div className='buttonContainer'>
+                                    <button id='check-history' type='button' onClick={historyButton}>Check history</button>
+                                    <button is='edit-user' type='button' onClick={editButton}>Edit user</button>
+                                    <button id='log-out' type='button' onClick={logOutButton}>Log Out</button>
+                                </div>
                             </div>
                         </section>
                     </>
                 ) : user && edit && !checkHistory ? (
-                    <section className='profileDetails'>
-                        <form onSubmit={handleEdit}>
-                            <label><h5>Username: </h5>
-                                <input type='text' value={username} onChange={e => setUsername(e.target.value)}></input>
-                            </label><br />
-                            <label><h5>Email: </h5>
-                                <input type='email' value={email} onChange={e => setEmail(e.target.value)}></input>
-                            </label><br />
-                            <label><h5>Old password: </h5>
-                                <input type='password' onChange={e => setOldPassword(e.target.value)}></input>
-                            </label><br />
-                            <label><h5>New password: </h5>
-                                <input type='password' onChange={e => setNewPassword(e.target.value)}></input>
-                            </label><br />
+                    <section className='row' id='profileDetails'>
+                        <form className="col" id='details' onSubmit={handleEdit}>
+                            <h3 className="row">Edit user</h3>
+                            <label className="row"><div id="data-type">Username: </div>
+                                <input id="data" type='text' value={username} onChange={e => setUsername(e.target.value)}></input>
+                            </label>
+                            <label className="row"><div id="data-type">Email: </div>
+                                <input id="data" type='email' value={email} onChange={e => setEmail(e.target.value)}></input>
+                            </label>
+                            <label className="row"><div id="data-type">Old password: </div>
+                                <input id="data" type='password' onChange={e => setOldPassword(e.target.value)}></input>
+                            </label>
+                            <label className="row"><div id="data-type">New password: </div>
+                                <input id="data" type='password' onChange={e => setNewPassword(e.target.value)}></input>
+                            </label>
                             <button id='save-changes' type='submit'>Save changes</button>
                             <button id='cancel' type='button' onClick={cancelButton}>Cancel</button>
                         </form>

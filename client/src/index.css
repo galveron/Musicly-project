@@ -306,7 +306,7 @@ section::-webkit-scrollbar {
 label,
 h2,
 #details,
-.profileDetails,
+#profileDetails,
 .history,
 #not-logged-in,
 #text,
@@ -315,7 +315,7 @@ h2,
 }
 
 .history,
-.profileDetails {
+#profileDetails {
   margin-left: 30px
 }
 
@@ -523,4 +523,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
 #artist-name {
   font-weight: bolder;
   margin: 5px
+}
+
+#data {
+  background-color: rgb(193, 177, 206);
+  border-radius: 10px;
+  margin: 10px;
+  padding: 5px;
+  padding-left: 20px;
+  color: #1a1a1a;
+  width: 50%;
 }
