@@ -51,12 +51,12 @@ export default function SongCard(props) {
         e.preventDefault();
         console.log(song);
         song.key && song.actions ?
-            props.setPlaySong(song.actions[1].uri)
+            setCurrentPlaylist([{src: song.actions[1].uri, name: song.title}])
             : song.key && !song.actions && song.hub ?
-                props.setPlaySong(song.hub.actions[1].uri)
+                setCurrentPlaylist([{src: song.hub.actions[1].uri, name: song.title}])
                 : song.play ?
-                    props.setPlaySong(song.play)
-                    : props.setPlaySong(song.tracks.actions[1].uri)
+                    setCurrentPlaylist([{src: song.play, name: song.title}])
+                    : setCurrentPlaylist([{src: song.tracks.actions[1].uri, name: song.title}])
 
         addToHistory();
     }

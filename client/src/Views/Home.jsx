@@ -123,7 +123,7 @@ export default function Home() {
     }, [favSongKey, favorites])
 
     //console.log(topTenByCountry);
-    console.log(currentPlaylist);
+    //console.log(currentPlaylist);
 
     //console.log(recTen);
     return (

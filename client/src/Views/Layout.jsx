@@ -16,7 +16,6 @@ export const useGlobalContext = () => {
 
 export function Layout() {
     const [currentPlaylist, setCurrentPlaylist] = useState([])
-    console.log(currentPlaylist);
 
     return (
         <>

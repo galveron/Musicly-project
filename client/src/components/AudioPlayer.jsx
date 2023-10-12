@@ -1,4 +1,5 @@
 import React from 'react';
+import { GlobalContext } from '../Views/Layout';
 
 class AudioPlayer extends React.Component {
     state = {
@@ -12,11 +13,18 @@ class AudioPlayer extends React.Component {
         tracks: [],
         newTrack: 0,
     }
-
+    
     audioRef = React.createRef()
 
     componentDidMount() {
+        
         this.setState({ tracks: this.props.tracks });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.tracks !== this.props.tracks) {
+            this.setState({ tracks: this.props.tracks });
+        }
     }
 
     automaticPLay() {
@@ -92,7 +100,7 @@ class AudioPlayer extends React.Component {
 
     render() {
         const { playing, currentTime, duration, volume, currentTrack, tracks } = this.state
-        //const { src } = this.props
+        
         if (tracks) {
             if (tracks.length > 0) {
                 return (
@@ -116,7 +124,6 @@ class AudioPlayer extends React.Component {
                             <p>{tracks[currentTrack].name}</p>
                             : <></>
                         }
-
                         <div className='volumeDuration'>
                             <label className='volumeLabel'>Volume
                                 <input
@@ -144,7 +151,6 @@ class AudioPlayer extends React.Component {
                     </div>
                 )
             }
-
         }
     }
 }
