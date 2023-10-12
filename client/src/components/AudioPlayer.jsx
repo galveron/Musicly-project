@@ -60,7 +60,7 @@ class AudioPlayer extends React.Component {
     handleTimeUpdate = () => {
         this.setState({
             currentTime: this.audioRef.current.currentTime,
-            duration: this.audioRef.current.duration,
+            duration: isFinite(this.audioRef.current.duration) ? this.audioRef.current.duration : 0,
             currentTimeSeconds: this.time_convert(Math.round(this.audioRef.current.currentTime)),
             durationSeconds: this.time_convert(Math.round(this.audioRef.current.duration))
         })
