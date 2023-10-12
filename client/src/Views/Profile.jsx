@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useGlobalContext } from '../Views/Layout';
 import { Link } from 'react-router-dom';
-import AudioPlayer from '../components/AudioPlayer';
 
 function Profile() {
 
@@ -18,17 +18,20 @@ function Profile() {
     const [checkHistory, setCheckHistory] = useState(null)
     const [loggedIn, setLoggedIn] = useState(Cookies.get("authenticated"))
     const [historyDeleted, setHistoryDeleted] = useState(null)
+    const { logged, setLogged} = useGlobalContext();
 
     //fetching user and set details
     useEffect(() => {
-        async function fetchData() {
+        if (loggedIn) {
+         async function fetchData() {
             const response = await fetch(`http://localhost:3000/profile/${cookieUsername}`)
             const result = await response.json()
             setUser(result)
         }
         fetchData()
-        setHistoryDeleted(null)
-    }, [cookieUsername, historyDeleted])
+        setHistoryDeleted(null)   
+        }
+    }, [cookieUsername, historyDeleted, loggedIn])
 
     useEffect(() => {
         if (user) {
@@ -94,6 +97,7 @@ function Profile() {
         Cookies.remove('username')
         Cookies.remove('authenticated')
         setLoggedIn(false)
+        setLogged(false)
     }
 
     function historyButton(e) {
@@ -145,10 +149,10 @@ function Profile() {
             window.alert(result.msg);
         }
     }
-    function reloadFunction() {
-        window.location.reload(false)
-        window.location.replace('http://localhost:5173/login')
-    }
+    // function reloadFunction() {
+    //     window.location.reload(false)
+    //     window.location.replace('http://localhost:5173/login')
+    // }
 
     return (
         <section id='section' className='col profile'>
@@ -203,7 +207,7 @@ function Profile() {
                             <h3 id='not-logged-in'>
                                 You are not logged in. Please log in or regist to the site.
                             </h3>
-                            <button id='logged-in-button' onClick={reloadFunction}>Log in/Sign up</button>
+                            <Link to="/login"><button id='logged-in-button' >Log in/Sign up</button></Link>
                         </>
                     )
                         : (

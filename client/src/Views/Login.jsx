@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import AudioPlayer from '../components/AudioPlayer';
+import { useGlobalContext } from '../Views/Layout';
 
 function Login() {
 
@@ -9,6 +9,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [registered, setRegistered] = useState(null)
+    const { logged, setLogged} = useGlobalContext();
 
     //changing states when buttons clicked
     function logInButton(e) {
@@ -72,14 +73,14 @@ function Login() {
             setLoginState("loggedIn")
             Cookies.set('username', data.user.username, { expires: 1 })
             Cookies.set('authenticated', true, { expires: 1 })
+            setLogged(true)
         }
-        reloadFunction()
     }
 
-    function reloadFunction() {
-        window.location.reload(false)
-        window.location.replace('http://localhost:5173/')
-    }
+    // function reloadFunction() {
+    //     window.location.reload(false)
+    //     window.location.replace('http://localhost:5173/')
+    // }
 
 
     return (
