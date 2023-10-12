@@ -120,8 +120,14 @@ class AudioPlayer extends React.Component {
                             </div>
                             <button onClick={this.handleNextTrack}>Next</button>
                         </div>
-                        {tracks[0].name ?
-                            <p>{tracks[currentTrack].name}</p>
+                        {tracks[currentTrack].name ?
+                            <><p>{tracks[currentTrack].name}</p>
+                            {
+                                tracks[currentTrack].artist ? 
+                                <p>{tracks[currentTrack].artist}</p>
+                                : <></>
+                            }
+                            </>
                             : <></>
                         }
                         <div className='volumeDuration'>
