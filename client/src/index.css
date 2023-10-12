@@ -91,7 +91,7 @@ button:focus-visible {
 
 #main {
   position: relative;
-  height: 80vh;
+  height: 70vh;
   width: 100%;
   min-width: 450px;
   top: 70px;
@@ -103,7 +103,7 @@ button:focus-visible {
   margin-left: 10px;
   background-color: #242424;
   display: flex;
-  height: 70vh;
+  height: calc(100vh - 75px - 90px);
   width: 50px;
   padding: 0;
   padding-top: 3vh;
@@ -124,10 +124,8 @@ button:focus-visible {
   position: relative;
   height: 50px;
   border-radius: 10px;
-  width: 98%;
   top: 10px;
-  margin-right: 20px;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .navbar {
@@ -177,7 +175,7 @@ div::-webkit-scrollbar {
   background-image: linear-gradient(rgb(122, 38, 193), rgb(36, 36, 36));
   overflow: scroll;
   color: #000000;
-  height: 70vh;
+  height: calc(100vh - 75px - 90px)
 }
 
 section::-webkit-scrollbar {
@@ -198,9 +196,10 @@ section::-webkit-scrollbar {
 }
 
 .navbar-ul {
-  width: 96vw;
+  width: calc(100vw - 20px);
   display: flex;
   justify-content: space-between;
+  padding-right: 20px;
 }
 
 .nav {
@@ -338,7 +337,6 @@ h2,
 .player {
   position: absolute;
   bottom: 40vh;
-  left: 2vw;
 }
 
 .profile {
@@ -349,15 +347,16 @@ h2,
   display: flex;
   position: fixed;
   bottom: 1vw;
-  right: 1vw;
-  left: 1vw;
   background-color: rgb(128, 0, 128);
   justify-content: center;
   border-radius: 10px;
   margin: 0;
-  width: 98%;
+  margin-right: 10px;
+  margin-left: 10px;
+  width: calc(100vw - 20px);
   min-width: 500px;
-  height: 13vh;
+  margin-top: 5px;
+  min-height: 70px;
 }
 
 #audioContainer {
@@ -387,4 +386,35 @@ h2,
 
 #register-form {
   margin-left: 10px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track:hover {
+  background-color: #000000;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #ffffff;
+  height: 3px;
+  border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -4px;
+  border-radius: 5px;
+  background-color: rgb(152, 134, 167);
+  height: 10px;
+  width: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background-color: rgb(255, 255, 255);
 }
