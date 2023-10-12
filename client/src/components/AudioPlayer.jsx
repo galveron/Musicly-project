@@ -22,6 +22,9 @@ class AudioPlayer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (this.props.tracks.length === 1) {
+            this.state.currentTrack = 0
+        }
         if (prevProps.tracks !== this.props.tracks) {
             this.setState({ tracks: this.props.tracks });
         }

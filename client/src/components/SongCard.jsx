@@ -44,12 +44,12 @@ export default function SongCard(props) {
             body: JSON.stringify(newSong)
         })
 
-        console.log("Added to history");
+        //console.log("Added to history");
     }
 
     function playClick(e) {
         e.preventDefault();
-        console.log(song);
+        //console.log(song);
         song.key && song.actions ?
             setCurrentPlaylist([{src: song.actions[1].uri, name: song.title, artist: song.subtitle}])
             : song.key && !song.actions && song.hub ?
