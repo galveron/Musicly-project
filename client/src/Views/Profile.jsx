@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useGlobalContext } from '../Views/Layout';
 import { Link } from 'react-router-dom';
-import AudioPlayer from '../components/AudioPlayer';
 
 function Profile() {
 
@@ -18,17 +18,20 @@ function Profile() {
     const [checkHistory, setCheckHistory] = useState(null)
     const [loggedIn, setLoggedIn] = useState(Cookies.get("authenticated"))
     const [historyDeleted, setHistoryDeleted] = useState(null)
+    const { logged, setLogged} = useGlobalContext();
 
     //fetching user and set details
     useEffect(() => {
-        async function fetchData() {
+        if (loggedIn) {
+         async function fetchData() {
             const response = await fetch(`http://localhost:3000/profile/${cookieUsername}`)
             const result = await response.json()
             setUser(result)
         }
         fetchData()
-        setHistoryDeleted(null)
-    }, [cookieUsername, historyDeleted])
+        setHistoryDeleted(null)   
+        }
+    }, [cookieUsername, historyDeleted, loggedIn])
 
     useEffect(() => {
         if (user) {
@@ -94,6 +97,7 @@ function Profile() {
         Cookies.remove('username')
         Cookies.remove('authenticated')
         setLoggedIn(false)
+        setLogged(false)
     }
 
     function historyButton(e) {
@@ -120,108 +124,99 @@ function Profile() {
     //handling submits
     async function handleEdit(e) {
         e.preventDefault();
+        const updatedUser = {
+            username: username,
+            email: email,
+            password: oldPassword,
+            newPassword: newPassword,
+        }
         const response = await fetch(`http://localhost:3000/profile/edit/${cookieUsername}`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Accept": "application/json"
             },
-            body: JSON.stringify({ password: oldPassword })
+            body: JSON.stringify(updatedUser)
         })
-        const check = await response.json()
-        if (check.msg === "matched") {
-            const updatedUser = {
-                username: username,
-                email: email,
-                password: newPassword ? newPassword : oldPassword
-            }
-            const update = await fetch(`http://localhost:3000/profile/edit/${cookieUsername}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify(updatedUser)
-            })
-            const result = await update.json()
-            console.log(result);
+        const result = await response.json()
+        if (result.msg === "DONE") {
             Cookies.set('username', username, { expires: 1 })
             setCookieUsername(username)
             setEdit(null)
             setOldPassword("")
             setNewPassword("")
         } else {
-            window.alert(check.msg);
+            window.alert(result.msg);
         }
     }
-    function reloadFunction() {
-        window.location.reload(false)
-        window.location.replace('http://localhost:5173/login')
-    }
+    // function reloadFunction() {
+    //     window.location.reload(false)
+    //     window.location.replace('http://localhost:5173/login')
+    // }
 
     return (
-            <section id='section' className='col profile'>
-                {
-                    user && !edit && loggedIn && !checkHistory ? (
-                        <>
-                            <section className='profileDetails'>
-                                <div id='details' >
-                                    <h3>User details</h3>
-                                    <div>Username: {user.username}</div>
-                                    <div>Email: {user.email}</div>
-                                    <div>Your most listened song: {mostListenedSong}</div>
-                                    <div>Your most listened artist: {mostListenedArtist}</div>
-                                    {/* <div>Your most listened album: {mostListenedAlbum}</div> */}
-                                </div>
-                                <div className='buttonContainer'>
-                                    <button id='check-history' type='button' onClick={historyButton}>Check history</button>
-                                    <button is='edit-user' type='button' onClick={editButton}>Edit user</button>
-                                    <button id='log-out' type='button' onClick={logOutButton}>Log Out</button>
-                                </div>
-                            </section>
-                        </>
-                    ) : user && edit && !checkHistory ? (
+        <section id='section' className='col profile'>
+            {
+                user && !edit && loggedIn && !checkHistory ? (
+                    <>
                         <section className='profileDetails'>
-                            <form onSubmit={handleEdit}>
-                                <label><h5>Username: </h5>
-                                    <input type='text' value={username} onChange={e => setUsername(e.target.value)}></input>
-                                </label><br />
-                                <label><h5>Email: </h5>
-                                    <input type='email' value={email} onChange={e => setEmail(e.target.value)}></input>
-                                </label><br />
-                                <label><h5>Old password: </h5>
-                                    <input type='password' onChange={e => setOldPassword(e.target.value)}></input>
-                                </label><br />
-                                <label><h5>New password: </h5>
-                                    <input type='password' onChange={e => setNewPassword(e.target.value)}></input>
-                                </label><br />
-                                <button id='save-changes' type='submit'>Save changes</button>
-                                <button id='cancel' type='button' onClick={cancelButton}>Cancel</button>
-                            </form>
-
+                            <div id='details' >
+                                <h3>User details</h3>
+                                <div>Username: {user.username}</div>
+                                <div>Email: {user.email}</div>
+                                <div>Your most listened song: {mostListenedSong}</div>
+                                <div>Your most listened artist: {mostListenedArtist}</div>
+                                {/* <div>Your most listened album: {mostListenedAlbum}</div> */}
+                            </div>
+                            <div className='buttonContainer'>
+                                <button id='check-history' type='button' onClick={historyButton}>Check history</button>
+                                <button is='edit-user' type='button' onClick={editButton}>Edit user</button>
+                                <button id='log-out' type='button' onClick={logOutButton}>Log Out</button>
+                            </div>
                         </section>
-                    ) : checkHistory ? (
-                        <section className='history'>
-                            {history.songs.map(song => <h4>{song}</h4>)}
-                            <button id='delete-history-button' type='button' onClick={deleteHistoryButton}>Delete history</button>
+                    </>
+                ) : user && edit && !checkHistory ? (
+                    <section className='profileDetails'>
+                        <form onSubmit={handleEdit}>
+                            <label><h5>Username: </h5>
+                                <input type='text' value={username} onChange={e => setUsername(e.target.value)}></input>
+                            </label><br />
+                            <label><h5>Email: </h5>
+                                <input type='email' value={email} onChange={e => setEmail(e.target.value)}></input>
+                            </label><br />
+                            <label><h5>Old password: </h5>
+                                <input type='password' onChange={e => setOldPassword(e.target.value)}></input>
+                            </label><br />
+                            <label><h5>New password: </h5>
+                                <input type='password' onChange={e => setNewPassword(e.target.value)}></input>
+                            </label><br />
+                            <button id='save-changes' type='submit'>Save changes</button>
                             <button id='cancel' type='button' onClick={cancelButton}>Cancel</button>
-                        </section>
+                        </form>
+
+                    </section>
+                ) : checkHistory ? (
+                    <section className='history'>
+                        {history.songs.map(song => <h4>{song}</h4>)}
+                        <button id='delete-history-button' type='button' onClick={deleteHistoryButton}>Delete history</button>
+                        <button id='cancel' type='button' onClick={cancelButton}>Cancel</button>
+                    </section>
+                )
+                    : !loggedIn ? (
+                        <>
+                            <h3 id='not-logged-in'>
+                                You are not logged in. Please log in or regist to the site.
+                            </h3>
+                            <Link to="/login"><button id='logged-in-button' >Log in/Sign up</button></Link>
+                        </>
                     )
-                        : !loggedIn ? (
-                            <>
-                                <h3 id='not-logged-in'>
-                                    You are not logged in. Please log in or regist to the site.
-                                </h3>
-                                <button id='logged-in-button' onClick={reloadFunction}>Log in/Sign up</button>
-                            </>
+                        : (
+                            <h3 className='profileDetails'>
+                                Loading, please wait...
+                            </h3>
                         )
-                            : (
-                                <h3 className='profileDetails'>
-                                    Loading, please wait...
-                                </h3>
-                            )
-                }
-            </section>
+            }
+        </section>
     )
 
 }

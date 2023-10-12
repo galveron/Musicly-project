@@ -16,12 +16,13 @@ export const useGlobalContext = () => {
 
 export function Layout() {
     const [currentPlaylist, setCurrentPlaylist] = useState([])
+    const [logged, setLogged] = useState(false)
 
     return (
         <>
             <div className='col-12' id='outer-box'>
                 <div className='row' id='main'>
-                    <GlobalContext.Provider value={{ currentPlaylist, setCurrentPlaylist }}>
+                    <GlobalContext.Provider value={{ currentPlaylist, setCurrentPlaylist, logged, setLogged }}>
                         <Navbar />
                         <Side />
                         <section id="audioplayer" className='row'>

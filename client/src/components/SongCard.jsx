@@ -51,12 +51,12 @@ export default function SongCard(props) {
         e.preventDefault();
         console.log(song);
         song.key && song.actions ?
-            setCurrentPlaylist([{src: song.actions[1].uri, name: song.title}])
+            setCurrentPlaylist([{src: song.actions[1].uri, name: song.title, artist: song.subtitle}])
             : song.key && !song.actions && song.hub ?
-                setCurrentPlaylist([{src: song.hub.actions[1].uri, name: song.title}])
+                setCurrentPlaylist([{src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle}])
                 : song.play ?
-                    setCurrentPlaylist([{src: song.play, name: song.title}])
-                    : setCurrentPlaylist([{src: song.tracks.actions[1].uri, name: song.title}])
+                    setCurrentPlaylist([{src: song.play, name: song.title, artist: song.subtitle}])
+                    : setCurrentPlaylist([{src: song.tracks.actions[1].uri, name: song.title, artist: song.subtitle}])
 
         addToHistory();
     }
@@ -64,12 +64,12 @@ export default function SongCard(props) {
     function addCurrentPlaylist(e) {
         e.preventDefault();
         song.key && song.actions ?
-        setCurrentPlaylist([...currentPlaylist, {src: song.actions[1].uri, name: song.title}])
+        setCurrentPlaylist([...currentPlaylist, {src: song.actions[1].uri, name: song.title, artist: song.subtitle}])
             : song.key && !song.actions && song.hub ?
-            setCurrentPlaylist([...currentPlaylist, {src: song.hub.actions[1].uri, name: song.title}])
+            setCurrentPlaylist([...currentPlaylist, {src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle}])
                 : song.play ?
-                setCurrentPlaylist([...currentPlaylist, {src: song.play, name: song.title}])
-                    : setCurrentPlaylist([...currentPlaylist, {src: song.tracks.actions[1].uri, name: song.title}])
+                setCurrentPlaylist([...currentPlaylist, {src: song.play, name: song.title, artist: song.subtitle}])
+                    : setCurrentPlaylist([...currentPlaylist, {src: song.tracks.actions[1].uri, name: song.tracks.title, artist: song.tracks.subtitle}])
     }
 
     const addToFavorites = async (event) => {

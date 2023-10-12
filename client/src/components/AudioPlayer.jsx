@@ -98,6 +98,14 @@ class AudioPlayer extends React.Component {
         }
     }
 
+    handleBackSeek = () => {
+        this.audioRef.current.currentTime -= 15
+    }
+
+    handleForwardSeek = () => {
+        this.audioRef.current.currentTime += 15
+    }
+
     render() {
         const { playing, currentTime, duration, volume, currentTrack, tracks } = this.state
         
@@ -113,15 +121,23 @@ class AudioPlayer extends React.Component {
                         />
                         <div className='playButtonContainer'>
                             <button onClick={this.handlePrevTrack}>Prev</button>
+                            <button onClick={this.handleBackSeek}>{"<<"}15</button>
                             <div >
                                 <button disabled={tracks[currentTrack].src ? false : true} onClick={playing ? this.handlePause : this.handlePlay} className='playButton'>
                                     {playing ? <i className="fa-solid fa-pause"></i> : <i className="fa-solid fa-play"></i>}
                                 </button>
                             </div>
+                            <button onClick={this.handleForwardSeek}>15{">>"}</button>
                             <button onClick={this.handleNextTrack}>Next</button>
                         </div>
-                        {tracks[0].name ?
-                            <p>{tracks[currentTrack].name}</p>
+                        {tracks[currentTrack].name ?
+                            <><p>{tracks[currentTrack].name}</p>
+                            {
+                                tracks[currentTrack].artist ? 
+                                <p>{tracks[currentTrack].artist}</p>
+                                : <></>
+                            }
+                            </>
                             : <></>
                         }
                         <div className='volumeDuration'>

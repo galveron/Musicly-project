@@ -234,24 +234,21 @@ app.get('/profile/:username', async (req, res) => {
     }
 })
 //edit profile
-app.patch('/profile/edit/:username', async (req, res) => {
-    try {
-        let user = await User.findOneAndUpdate({ username: req.params.username }, {
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email
-        })
-        res.send({ user: user, msg: "DONE" })
-    } catch (error) {
-        res.status(500).send({ msg: "Something went wrong" })
-    }
-})
-
 app.post('/profile/edit/:username', async (req, res) => {
     try {
         const user = await User.findOne({ username: req.params.username })
         if (user.password === req.body.password) {
-            res.send({ msg: "matched" })
+            try {
+                await Song.updateMany({user: req.params.username}, {user: req.body.username})
+                let user = await User.findOneAndUpdate({ username: req.params.username }, {
+                    username: req.body.username,
+                    password: req.body.newPassword,
+                    email: req.body.email
+                })
+                res.send({ user: user, msg: "DONE" })
+            } catch (error) {
+                res.status(500).send({ msg: "Something went wrong" })
+            }
         } else {
             res.send({ msg: "wrong password" })
         }
@@ -259,7 +256,6 @@ app.post('/profile/edit/:username', async (req, res) => {
         res.status(500).send({ msg: "Something went wrong" })
     }
 })
-
 
 mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("Connection to the database have been successful!");
