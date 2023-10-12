@@ -47,11 +47,12 @@ h1 {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 8px;
+  padding: 6px;
   padding-right: 20px;
   padding-left: 20px;
   margin-right: 10px;
   margin-left: 10px;
+  margin-top: 5px;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -356,27 +357,83 @@ h2,
   width: calc(100vw - 20px);
   min-width: 500px;
   margin-top: 5px;
-  min-height: 70px;
+  height: 70px;
 }
 
 #audioContainer {
-  padding-left: 30px;
   display: flex;
   flex-direction: row;
   align-items: center;
   position: relative;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
-.playButtonContainer {
-  margin: 10px;
-  margin-right: 50px;
+#textContainer {
+  display: flex;
+  flex-direction: row;
+  color: #ffffff;
+  font-size: 15px;
+  text-align: center;
+}
+
+#middle-col {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#right-col {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 50px;
+}
+
+#playButtonContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  left: 1vw
+}
+
+
+#volumeLabel,
+#durationLabel {
   display: flex;
   flex-direction: row;
 }
 
-.volume,
+#durationLabel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 12px;
+  width: 100%;
+}
+
+#volumeLabel {
+  width: 100px;
+  font-size: 12px;
+  justify-content: center;
+}
+
+.volume {
+  margin-top: 10px;
+  width: 80px;
+}
+
 .duration {
-  padding-left: 5%;
+  width: 80%;
+  padding: 0;
 }
 
 #reg-button {
@@ -396,7 +453,7 @@ input[type="range"] {
 }
 
 input[type="range"]::-webkit-slider-runnable-track:hover {
-  background-color: #000000;
+  background-color: rgb(74, 52, 92);
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
@@ -416,5 +473,54 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(55, 27, 77);
+  ;
+}
+
+.simple-2 {
+  width: 50px;
+  background: transparent;
+  padding: 2px;
+  color: rgb(192, 183, 199);
+}
+
+.simple-1 {
+  width: 15px;
+  background: transparent;
+  padding: 2px;
+  color: rgb(192, 183, 199);
+}
+
+.simple-1:hover,
+.simple-2:hover {
+  background: transparent;
+  border-color: transparent;
+  padding: 2px;
+  color: #ffffff;
+}
+
+#playbutton:hover {
+  transform: scale(1.3);
+}
+
+.tracks {
+  display: block;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  margin-bottom: 0;
+  height: 20px;
+}
+
+#duartion-time {
+  margin-right: 5px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+#artist-name {
+  font-weight: bolder;
+  margin: 5px
 }

@@ -51,12 +51,12 @@ export default function SongCard(props) {
         e.preventDefault();
         console.log(song);
         song.key && song.actions ?
-            setCurrentPlaylist([{src: song.actions[1].uri, name: song.title, artist: song.subtitle}])
+            setCurrentPlaylist([{ src: song.actions[1].uri, name: song.title, artist: song.subtitle }])
             : song.key && !song.actions && song.hub ?
-                setCurrentPlaylist([{src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle}])
+                setCurrentPlaylist([{ src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle }])
                 : song.play ?
-                    setCurrentPlaylist([{src: song.play, name: song.title, artist: song.subtitle}])
-                    : setCurrentPlaylist([{src: song.tracks.actions[1].uri, name: song.title, artist: song.subtitle}])
+                    setCurrentPlaylist([{ src: song.play, name: song.title, artist: song.subtitle }])
+                    : setCurrentPlaylist([{ src: song.tracks.actions[1].uri, name: song.title, artist: song.subtitle }])
 
         addToHistory();
     }
@@ -64,12 +64,12 @@ export default function SongCard(props) {
     function addCurrentPlaylist(e) {
         e.preventDefault();
         song.key && song.actions ?
-        setCurrentPlaylist([...currentPlaylist, {src: song.actions[1].uri, name: song.title, artist: song.subtitle}])
+            setCurrentPlaylist([...currentPlaylist, { src: song.actions[1].uri, name: song.title, artist: song.subtitle }])
             : song.key && !song.actions && song.hub ?
-            setCurrentPlaylist([...currentPlaylist, {src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle}])
+                setCurrentPlaylist([...currentPlaylist, { src: song.hub.actions[1].uri, name: song.title, artist: song.subtitle }])
                 : song.play ?
-                setCurrentPlaylist([...currentPlaylist, {src: song.play, name: song.title, artist: song.subtitle}])
-                    : setCurrentPlaylist([...currentPlaylist, {src: song.tracks.actions[1].uri, name: song.tracks.title, artist: song.tracks.subtitle}])
+                    setCurrentPlaylist([...currentPlaylist, { src: song.play, name: song.title, artist: song.subtitle }])
+                    : setCurrentPlaylist([...currentPlaylist, { src: song.tracks.actions[1].uri, name: song.tracks.title, artist: song.tracks.subtitle }])
     }
 
     const addToFavorites = async (event) => {
@@ -135,10 +135,10 @@ export default function SongCard(props) {
             <img src={song.images ? song.images.coverart : '/placeholder.png'} className="img" />
             <div className="container">
                 <h4><b>{song.title}</b></h4>
+                {song.artists ? song.artists.map(artist => <p id="artist-name" key={artist.adamid}>{artist.alias}</p>) : <div>no data </div>}
                 <button onClick={playClick}>Play</button>
                 <button onClick={addCurrentPlaylist}>Add to current playlist</button>
-                {song.artists ? song.artists.map(artist => <p key={artist.adamid}>{artist.alias}</p>) : <div>no data </div>}
-                {isFavorite ? <button onClick={removeFromFavorites}>Remove Favorite</button> : <button onClick={addToFavorites}>Add to favourites</button>}
+                {isFavorite ? <button onClick={removeFromFavorites}><i style={{ color: 'red', }} className="fa-solid fa-heart"></i></button> : <button onClick={addToFavorites}><i className="fa-regular fa-heart"></i></button>}
             </div>
         </div>
     ) : (
@@ -147,7 +147,7 @@ export default function SongCard(props) {
             <div className="container">
                 <h4><b>{song.track.title}</b></h4>
                 {song.track.artists.map(artist => <p key={artist.adamid}>{artist.alias}</p>)}
-                {isFavorite ? <button onClick={removeFromFavorites}>Remove Favorite</button> : <button onClick={addToFavorites}>Add to favourites</button>}
+                {isFavorite ? <button onClick={removeFromFavorites}><i style={{ color: 'red', }} className="fa-solid fa-heart"></i></button> : <button onClick={addToFavorites}><i className="fa-regular fa-heart"></i></button>}
             </div>
         </div>
     )
