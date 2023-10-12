@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const { Schema, model} = mongoose;
+const { Schema, model } = mongoose;
 
 const userschema = new Schema({
     username: {
@@ -19,8 +19,8 @@ const userschema = new Schema({
     history: {
         artists: [],
         albums: [],
-        songs: []
+        songs: [],
     },
-})
+});
 
 export default model('User', userschema, 'users');

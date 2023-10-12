@@ -1,40 +1,34 @@
 import SongCard from '../components/SongCard';
-import ArtistCard from '../components/ArtistCard';
-import AlbumCard from '../components/AlbumCard';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import AudioPlayer from '../components/AudioPlayer';
 import { useState, useEffect } from 'react';
-import { useGlobalContext } from '../Views/Layout'
+import { useGlobalContext } from '../Views/Layout';
 
 function Favorites() {
-    const [user, setUser] = useState(Cookies.get('username'))
+    const [user, setUser] = useState(Cookies.get('username'));
     const [favoriteSongs, setFavoriteSongs] = useState(null);
     const [favoriteAlbums, setFavoriteAlbums] = useState(null);
     const [favoriteArtists, setFavoriteArtists] = useState(null);
-    const [playSong, setPlaySong] = useState(null)
     const [removed, setRemoved] = useState(false);
-    const { currentPlaylist, setCurrentPlaylist } = useGlobalContext()
-
 
     useEffect(() => {
         const fetchFavoriteSongs = async () => {
             const response = await fetch(`http://localhost:3000/api/v1/${user}/favoriteSongs`);
             const data = await response.json();
             setFavoriteSongs(data);
-        }
+        };
 
         const fetchFavoriteAlbums = async () => {
             const response = await fetch(`http://localhost:3000/api/v1/${user}/favoriteAlbums`);
             const data = await response.json();
             setFavoriteAlbums(data);
-        }
+        };
 
         const fetchFavoriteArtists = async () => {
             const response = await fetch(`http://localhost:3000/api/v1/${user}/favoriteArtists`);
             const data = await response.json();
             setFavoriteArtists(data);
-        }
+        };
 
         fetchFavoriteSongs();
         fetchFavoriteAlbums();
@@ -46,7 +40,7 @@ function Favorites() {
         <section id='section' className='col'>
             <h2>Favorite songs: </h2>
             <div className='favorite-songs category'>{favoriteSongs && favoriteSongs.map(song =>
-                <SongCard key={song.key} song={song} setPlaySong={setPlaySong} removed={removed} setRemoved={setRemoved} />)}
+                <SongCard key={song.key} song={song} removed={removed} setRemoved={setRemoved} />)}
             </div>
             {/* <h4>Favorite albums: </h4>
             <div className='favorite-albums category'>{favoriteAlbums && favoriteAlbums.map(album => <AlbumCard key={album.id} album={album} />)}</div>
@@ -59,6 +53,6 @@ function Favorites() {
                 <Navigate to='/login' replace={true} />
             </section>
         )
-}
+};
 
 export default Favorites;

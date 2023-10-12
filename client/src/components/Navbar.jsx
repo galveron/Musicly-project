@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import Cookies from 'js-cookie'
-import { useGlobalContext } from '../Views/Layout'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { useGlobalContext } from '../Views/Layout';
 
 export default function Navbar() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const { logged } = useGlobalContext();
 
     useEffect(() => {
-        const status = Cookies.get('authenticated')
-        status ? setIsLoggedIn(true) : setIsLoggedIn(false)
-    }, [logged])
+        const status = Cookies.get('authenticated');
+        status ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    }, [logged]);
 
     return (
-        <div className='row fixed-top' id="topbar-background">
+        <div className='row fixed-top' id='topbar-background'>
             <nav className='navbar fixed-top align-items' id='topbar'>
                 <ul className='navbar-ul'>
                     {isLoggedIn ?
@@ -30,5 +30,5 @@ export default function Navbar() {
                 </ul>
             </nav>
         </div>
-    )
-}
+    );
+};

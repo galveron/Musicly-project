@@ -2,21 +2,22 @@ import express from "express";
 const app = express();
 import mongoose from "mongoose";
 import env from "dotenv";
-import Song from './model/Song.js';
-import Album from './model/Album.js';
-import Artist from './model/Artist.js';
+import Song from "./model/Song.js";
+import Album from "./model/Album.js";
+import Artist from "./model/Artist.js";
 import User from "./model/User.js"
+
 env.config();
 mongoose.set("strictQuery", false);
+
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded());
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173")
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-    next()
-})
-
+    next();
+});
 // register
 app.post('/register', async (req, res) => {
     try {
@@ -27,49 +28,46 @@ app.post('/register', async (req, res) => {
         const checkExistingUsername = await User.findOne({ username: username });
         const checkExistingEmail = await User.findOne({ email: email });
         if (checkExistingEmail) {
-            res.send({ msg: "The email already exist" })
+            res.send({ msg: "The email already exist" });
         } else if (checkExistingUsername) {
-            res.send({ msg: "The username already exist" })
+            res.send({ msg: "The username already exist" });
         } else {
             const user = new User({
                 username: username,
                 password: password,
                 email: email,
-                registDate: registDate
-            })
+                registDate: registDate,
+            });
             user.save()
                 .then(() => res.send({ msg: "You registered successfully! Now you can log in" }))
-                .catch(() => res.status(500).send({ msg: "Something went wrong" }))
-        }
+                .catch(() => res.status(500).send({ msg: "Something went wrong" }));
+        };
     } catch (error) {
-        res.status(500).send({ msg: "Something went wrong" })
-    }
-})
-
+        res.status(500).send({ msg: "Something went wrong" });
+    };
+});
 // log in
-
 app.post('/login', async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.body.username, password: req.body.password })
+        const user = await User.findOne({ username: req.body.username, password: req.body.password });
         if (user) {
-            res.send({ user: user, status: "OK" })
+            res.send({ user: user, status: "OK" });
         } else {
-            res.send({ msg: "Wrong username or password" })
+            res.send({ msg: "Wrong username or password" });
         }
     } catch (error) {
-        res.status(500).send({ error: error })
-    }
-})
-
+        res.status(500).send({ error: error });
+    };
+});
 // HISTORY
 app.get('/history/:username', async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.params.username })
-        res.send({ user: user, history: user.history })
+        const user = await User.findOne({ username: req.params.username });
+        res.send({ user: user, history: user.history });
     } catch (error) {
-        res.status(500).send({ msg: "Something went wrong" })
-    }
-})
+        res.status(500).send({ msg: "Something went wrong" });
+    };
+});
 
 app.post('/history/:username', async (req, res, next) => {
     try {
@@ -79,28 +77,26 @@ app.post('/history/:username', async (req, res, next) => {
         songArtist ? artists.push(songArtist) : null;
         songAlbum ? albums.push(songAlbum) : null;
         songTitle ? songs.push(`${songTitle} by ${songArtist}`) : null;
-
         user.save();
-        res.status(200).send({ msg: "updated" })
+        res.status(200).send({ msg: "updated" });
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 app.delete('/history/:username', async (req, res) => {
     try {
         let user = await User.findOneAndUpdate({ username: req.params.username }, {
             history: {
                 songs: [],
-                artists: []
-            }
+                artists: [],
+            },
         });
-        res.send({ user: user, msg: "history deleted" })
+        res.send({ user: user, msg: "history deleted" });
     } catch (error) {
         res.status(500).send({ msg: "Something went wrong" });
-    }
-})
-
+    };
+});
 // songs
 app.get("/api/v1/:username/favoriteSongs", async (req, res, next) => {
     try {
@@ -108,8 +104,8 @@ app.get("/api/v1/:username/favoriteSongs", async (req, res, next) => {
         res.send(favoriteSongs);
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 app.post("/api/v1/:username/favoriteSongs", async (req, res, next) => {
     try {
@@ -125,15 +121,15 @@ app.post("/api/v1/:username/favoriteSongs", async (req, res, next) => {
             genres,
             albumadamid,
             youtubeurl,
-            play
+            play,
         };
 
         await Song.create(newFavoriteSong);
         res.send({ msg: "Successfully added a new song" });
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 app.delete("/api/v1/:username/favoriteSongs/:key", async (req, res, next) => {
     try {
@@ -141,8 +137,8 @@ app.delete("/api/v1/:username/favoriteSongs/:key", async (req, res, next) => {
         res.send({ msg: "Song successfully deleted" });
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 // albums
 app.get("/api/v1/:username/favoriteAlbums", async (req, res, next) => {
@@ -151,8 +147,8 @@ app.get("/api/v1/:username/favoriteAlbums", async (req, res, next) => {
         res.send(favoriteAlbums);
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 app.post("/api/v1/:username/favoriteAlbums", async (req, res, next) => {
     try {
@@ -169,16 +165,15 @@ app.post("/api/v1/:username/favoriteAlbums", async (req, res, next) => {
                 trackCount: attributes.trackCount,
                 name: attributes.name,
                 artistName: attributes.artistName,
-                tracks: attributes.tracks
-            }
+                tracks: attributes.tracks,
+            },
         };
-
         await Album.create(newFavoriteAlbum);
-        res.send({ msg: "Successfully added a new album" })
+        res.send({ msg: "Successfully added a new album" });
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 app.delete("/api/v1/:username/favoriteAlbums/:id", async (req, res, next) => {
     try {
@@ -186,8 +181,8 @@ app.delete("/api/v1/:username/favoriteAlbums/:id", async (req, res, next) => {
         res.send({ msg: "Album successfully deleted" });
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 // artists
 app.get("/api/v1/:username/favoriteArtists", async (req, res, next) => {
@@ -196,8 +191,8 @@ app.get("/api/v1/:username/favoriteArtists", async (req, res, next) => {
         res.send(favoriteArtists);
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 app.post("/api/v1/:username/favoriteArtists", async (req, res, next) => {
     try {
@@ -205,15 +200,15 @@ app.post("/api/v1/:username/favoriteArtists", async (req, res, next) => {
         const newFavoriteArtist = {
             user: req.params.username,
             artistId: req.body.data[0].id,
-            resources
+            resources,
         };
 
         await Artist.create(newFavoriteArtist);
-        res.send({ msg: "Successfully added a new artist" })
+        res.send({ msg: "Successfully added a new artist" });
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 app.delete("/api/v1/:username/favoriteArtists/:id", async (req, res, next) => {
     try {
@@ -221,47 +216,47 @@ app.delete("/api/v1/:username/favoriteArtists/:id", async (req, res, next) => {
         res.send({ msg: "Artist successfully deleted" });
     } catch (err) {
         console.log(err);
-    }
-})
+    };
+});
 
 //profile
 app.get('/profile/:username', async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.params.username })
-        res.send(user)
+        const user = await User.findOne({ username: req.params.username });
+        res.send(user);
     } catch (error) {
-        res.status(500).send({ msg: "Something went wrong" })
-    }
-})
+        res.status(500).send({ msg: "Something went wrong" });
+    };
+});
 //edit profile
 app.post('/profile/edit/:username', async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.params.username })
+        const user = await User.findOne({ username: req.params.username });
         if (user.password === req.body.password) {
             try {
-                await Song.updateMany({user: req.params.username}, {user: req.body.username})
+                await Song.updateMany({ user: req.params.username }, { user: req.body.username });
                 let user = await User.findOneAndUpdate({ username: req.params.username }, {
                     username: req.body.username,
                     password: req.body.newPassword,
-                    email: req.body.email
-                })
-                res.send({ user: user, msg: "DONE" })
+                    email: req.body.email,
+                });
+                res.send({ user: user, msg: "DONE" });
             } catch (error) {
-                res.status(500).send({ msg: "Something went wrong" })
+                res.status(500).send({ msg: "Something went wrong" });
             }
         } else {
-            res.send({ msg: "wrong password" })
+            res.send({ msg: "wrong password" });
         }
     } catch (error) {
-        res.status(500).send({ msg: "Something went wrong" })
-    }
-})
+        res.status(500).send({ msg: "Something went wrong" });
+    };
+});
 
 mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("Connection to the database have been successful!");
     app.listen(3000, () => {
         console.log("App is running at port: 3000");
-    })
+    });
 }).catch((err) => {
     console.log(err);
-})
+});

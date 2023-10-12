@@ -1,5 +1,5 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 function Side() {
     return (
@@ -16,7 +16,7 @@ function Side() {
                 </li>
             </ul>
         </nav>
-    )
-}
+    );
+};
 
-export default Side
+export default Side;

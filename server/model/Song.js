@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const {Schema, model} = mongoose;
+const { Schema, model } = mongoose;
 
 const songSchema = new Schema({
         user: String,
@@ -13,7 +13,7 @@ const songSchema = new Schema({
         genres: Object,
         albumadamid: String,
         youtubeurl: Object,
-        play: String
-})
+        play: String,
+});
 
 export default model('Song', songSchema);
