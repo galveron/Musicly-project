@@ -145,33 +145,6 @@ class AudioPlayer extends React.Component {
 
                             <label className='row' id='durationLabel'>
                                 <div id="duartion-time">{this.state.currentTimeSeconds + ' / ' + this.state.durationSeconds}</div>
-                                <button onClick={this.handleForwardSeek}>15{">>"}</button>
-                                <button onClick={this.handleNextTrack}>Next</button>
-                            </label>
-                        </div>
-                        {tracks[currentTrack].name ?
-                            <><p>{tracks[currentTrack].name}</p>
-                                {
-                                    tracks[currentTrack].artist ?
-                                        <p>{tracks[currentTrack].artist}</p>
-                                        : <></>
-                                }
-                            </>
-                            : <></>
-                        }
-                        <div className='volumeDuration'>
-                            <label className='volumeLabel'>Volume
-                                <input
-                                    className='volume'
-                                    type="range"
-                                    min={0}
-                                    max={1}
-                                    step={0.01}
-                                    value={volume}
-                                    onChange={this.handleVolumeChange}
-                                />
-                            </label>
-                            <label className='durationLabel'>{this.state.currentTimeSeconds + ' / ' + this.state.durationSeconds}
                                 <input
                                     className='duration'
                                     type="range"

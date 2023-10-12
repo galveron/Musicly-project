@@ -66,7 +66,7 @@ export default function Home() {
                 {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': 'afa85eef4cmsh155012efac6de0ap192459jsn58b3965d483a',
+                        //'X-RapidAPI-Key': 'afa85eef4cmsh155012efac6de0ap192459jsn58b3965d483a',
                         'X-RapidAPI-Host': 'shazam.p.rapidapi.com',
                     }
                 });
