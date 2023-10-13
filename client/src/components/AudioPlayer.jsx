@@ -119,12 +119,15 @@ class AudioPlayer extends React.Component {
                         />
                         <div id="left-col" className='col-4'>
                             {tracks[currentTrack].name ?
-                                <div className='row' id='textContainer'><p className='tracks'>{tracks[currentTrack].name}</p>
-                                    {
-                                        tracks[currentTrack].artist ?
-                                            <p className='tracks'>{tracks[currentTrack].artist}</p>
-                                            : <></>
-                                    }
+                                <div className='row' id='textContainer'>
+                                    <div id="scroll-conatiner">
+                                        <p className='tracks'>{tracks[currentTrack].name}</p>
+                                        {
+                                            tracks[currentTrack].artist ?
+                                                <p className='tracks'>{tracks[currentTrack].artist}</p>
+                                                : <></>
+                                        }
+                                    </div>
                                 </div>
                                 : <></>
                             }
