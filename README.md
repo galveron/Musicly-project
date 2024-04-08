@@ -124,7 +124,7 @@ Project Link: [https://github.com/galveron/Musicly-project](https://github.com/g
 [contributors-url]: https://github.com/galveron/Musicly-project/graphs/contributors
 [issues-shield]: https://img.shields.io/github/issues/galveron/Musicly-project.svg?style=for-the-badge
 [issues-url]: https://github.com/galveron/Musicly-project/issues
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=0096FF
 [linkedin-url]: https://linkedin.com/in/veron-gal
 [product-screenshot]: images/musicly-screenshot.png
 [Express.js]: https://img.shields.io/badge/express.js-000000?style=for-the-badge&logo=expressjs&logoColor=white
