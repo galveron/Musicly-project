@@ -46,7 +46,8 @@
 
 [![Product Name Screen Shot][product-screenshot]]("images/musicly-screenshot.png")
 
-Our project is an engaging Spotify-inspired application featuring a music player. Users can enjoy music streaming and explore a variety of features akin to the popular platform.
+Our project is an engaging Spotify-inspired application featuring a music player. Our goal is to give users the experience of music streaming and the a variety of features akin to the popular platform.
+This project is exclusively intended for educational purposes, serving as a hands-on opportunity to gain proficiency in utilizing these tools effectively.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -66,8 +67,7 @@ Our project is an engaging Spotify-inspired application featuring a music player
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To try out our application, please follow the next steps:
 
 ### Prerequisites
 
@@ -82,13 +82,13 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    git clone https://github.com/galveron/Musicly-project
    ```
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
-3. Change folder
+2. Change folder
    ```sh
    cd Musicly-project/server
+   ```
+3. Install NPM packages
+   ```sh
+   npm install
    ```
 4. Run server
    ```sh
@@ -96,12 +96,18 @@ To get a local copy up and running follow these simple example steps.
    ```
 5. Change folder
    ```sh
-   cd ./client
+   cd ../client
    ```
-6. Run client
+6. Install NPM packages
+   ```sh
+   npm install
+   ```
+7. Run client
     ```sh
    npm run dev
    ```
+8. Open app
+   Enter http://localhost:5173/ in your browser.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -110,7 +116,7 @@ To get a local copy up and running follow these simple example steps.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@veron-gal](www.linkedin.com/in/veron-gal)
+My profile on LinkedIn: [@veron-gal](www.linkedin.com/in/veron-gal)
 
 Project Link: [https://github.com/galveron/Musicly-project](https://github.com/galveron/Musicly-project)
 
@@ -122,7 +128,7 @@ Project Link: [https://github.com/galveron/Musicly-project](https://github.com/g
 <!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/galveron/Musicly-project.svg?style=for-the-badge
 [contributors-url]: https://github.com/galveron/Musicly-project/graphs/contributors
-[issues-shield]: https://img.shields.io/github/issues/galveron/Musicly-project.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/galveron/Musicly-project.svg?style=for-the-badge&colorB=FFC300
 [issues-url]: https://github.com/galveron/Musicly-project/issues
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=0096FF
 [linkedin-url]: https://linkedin.com/in/veron-gal
